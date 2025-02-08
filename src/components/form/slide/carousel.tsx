@@ -2,31 +2,48 @@ import { FormType } from "~/app/sequence/[id]/form";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-import { Slide } from "~/components/form/slide";
+import { Slide } from "~/components/form/slide/preview";
+import { Button } from "~/components/ui/button";
 
-export function SlideCarousel({ form }: { form: FormType }) {
+export function PreviewCarousel({
+  form,
+  setApi,
+}: {
+  form: FormType;
+  setApi: (api: CarouselApi) => void;
+}) {
   return (
-    <Carousel className="w-full max-w-xs">
+    <Carousel className="w-full max-w-full" setApi={setApi}>
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
+        {form.getValues("slides").map((_, index) => (
+          <CarouselItem key={index} className="basis-1/2">
             <div className="p-1">
               <Slide form={form} index={index} />
             </div>
           </CarouselItem>
         ))}
-        <CarouselItem key="newslide">
+        <CarouselItem key="newslide" className="basis-1/2">
           <div className="p-1">
             <Card>
-              <CardContent className="flex aspect-square items-center justify-center p-6">
-                <span className="text-4xl font-semibold">
-                  new slide oder so
-                </span>
+              <CardContent className="flex aspect-video flex-col items-center justify-center space-y-4">
+                {form.getValues("slides").length === -0 && (
+                  <span>no slides in this sequence</span>
+                )}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() =>
+                    form.setValue("slides", [...form.getValues("slides"), {}])
+                  }
+                >
+                  create a new slide
+                </Button>
               </CardContent>
             </Card>
           </div>

@@ -1,39 +1,40 @@
 import { FormType } from "~/app/sequence/[id]/form";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
-  FormLabel,
-  FormDescription,
-  FormItem,
-  FormField,
   FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 
-export function Slide({ form, index }: { form: FormType; index: number }) {
+export function EditSlideContent({
+  form,
+  index,
+  current,
+}: {
+  form: FormType;
+  index: number;
+  current: number;
+}) {
   return (
-    <Card>
-      <CardContent className="flex flex-col space-y-8 p-2">
-        <FormItem className="flex flex-col">
-          <FormLabel className="text-base">Preview</FormLabel>
-          <div className="mb-4 aspect-video w-full rounded bg-neutral-300" />
-        </FormItem>
-        <EditSlideContent form={form} index={index} />
-        <Button className="self-end" variant="destructive">
-          Delete slide
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-function EditSlideContent({ form, index }: { form: FormType; index: number }) {
-  return (
-    <>
-      <SlideBackgroundSettings form={form} index={index} />
-      <SlideDurationSettings form={form} index={index} />
-    </>
+    <div className="px-16" hidden={index !== current}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Slide {index + 1}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <SlideBackgroundSettings form={form} index={index} />
+          <SlideDurationSettings form={form} index={index} />
+          <Button className="self-end" variant="destructive">
+            Delete slide
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
