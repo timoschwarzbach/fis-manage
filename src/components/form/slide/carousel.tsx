@@ -10,6 +10,7 @@ import {
 } from "~/components/ui/carousel";
 import { Slide } from "~/components/form/slide/preview";
 import { Button } from "~/components/ui/button";
+import { FormField } from "~/components/ui/form";
 
 export function PreviewCarousel({
   form,
@@ -21,13 +22,21 @@ export function PreviewCarousel({
   return (
     <Carousel className="w-full max-w-full" setApi={setApi}>
       <CarouselContent>
-        {form.getValues("slides").map((_, index) => (
-          <CarouselItem key={index} className="basis-1/2">
-            <div className="p-1">
-              <Slide form={form} index={index} />
-            </div>
-          </CarouselItem>
-        ))}
+        <FormField
+          control={form.control}
+          name="slides"
+          render={({ field }) => (
+            <>
+              {field.value.map((_, index) => (
+                <CarouselItem key={index} className="basis-1/2">
+                  <div className="p-1">
+                    <Slide form={form} index={index} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </>
+          )}
+        />
         <CarouselItem key="newslide" className="basis-1/2">
           <div className="p-1">
             <Card>
