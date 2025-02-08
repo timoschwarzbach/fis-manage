@@ -7,8 +7,9 @@ export default async function Page({
 }) {
   const id = (await params).id;
   return (
-    <div>
-      My Post: {id} <SequenceForm />
+    <div className="p-4">
+      <span>sequence id: {id}</span>
+      <SequenceForm />
     </div>
   );
 }
