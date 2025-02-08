@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
 
 export function SlideBottomSettings({
@@ -28,8 +29,8 @@ export function SlideBottomSettings({
             name={`slides.${index}.bottom.visible`}
             render={({ field }) => {
               return (
-                <FormItem>
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                <FormItem className="rounded-lg border p-3 shadow-sm">
+                  <FormItem className="flex flex-row items-center justify-between">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">
                         Bottom content
@@ -46,10 +47,11 @@ export function SlideBottomSettings({
                       />
                     </FormControl>
                   </FormItem>
-                  <div hidden={!field.value}>
-                    <BackgroundToggle form={form} index={index} />
+                  <div hidden={!field.value} className="space-y-4">
+                    <Separator className="my-4" />
                     <TitleField form={form} index={index} />
                     <DescriptionField form={form} index={index} />
+                    <BackgroundToggle form={form} index={index} />
                   </div>
                 </FormItem>
               );
@@ -77,7 +79,9 @@ function BackgroundToggle({ form, index }: { form: FormType; index: number }) {
                   aria-readonly
                 />
               </FormControl>
-              <FormLabel>Background</FormLabel>
+              <FormLabel>
+                Transparent Background (to improve ledgebility)
+              </FormLabel>
             </div>
           </FormItem>
         );
