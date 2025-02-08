@@ -12,6 +12,7 @@ import {
   LocationSettings,
   LocationStationDetails,
 } from "~/components/form/location";
+import { Slide } from "~/components/form/slide";
 
 const FormSchema = z.object({
   aspects: z.array(z.string()),
@@ -77,6 +78,7 @@ export function SequenceForm() {
         {form.getValues("location.type") === "stations" && (
           <LocationStationDetails form={form} />
         )}
+        <Slide />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
