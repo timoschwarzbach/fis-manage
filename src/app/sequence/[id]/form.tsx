@@ -37,6 +37,14 @@ const FormSchema = z.object({
   slides: z.array(
     z.object({
       background: z.string().optional(),
+      bottom: z
+        .object({
+          visible: z.boolean().optional(),
+          background: z.boolean().optional(),
+          title: z.string().optional(),
+          description: z.string().optional(),
+        })
+        .optional(),
       duration: z.number().optional(),
     }),
   ),
@@ -51,6 +59,12 @@ export type FormType = UseFormReturn<
     };
     slides: {
       background?: string;
+      bottom?: {
+        visible?: boolean;
+        background?: boolean;
+        title?: string;
+        description?: string;
+      };
       duration?: number;
     }[];
   },

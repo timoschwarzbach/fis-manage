@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { SlideBottomSettings } from "./bottom";
 
 export function EditSlideContent({
   form,
@@ -28,6 +29,7 @@ export function EditSlideContent({
         </CardHeader>
         <CardContent className="space-y-8">
           <SlideBackgroundSettings form={form} index={index} />
+          <SlideBottomSettings form={form} index={index} />
           <SlideDurationSettings form={form} index={index} />
           <Button className="self-end" variant="destructive">
             Delete slide
