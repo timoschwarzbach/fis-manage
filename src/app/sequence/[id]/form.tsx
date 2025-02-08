@@ -12,7 +12,7 @@ import {
   LocationSettings,
   LocationStationDetails,
 } from "~/components/form/location";
-import { Slide } from "~/components/form/slide";
+import { SlideCarousel } from "~/components/form/slide/carousel";
 
 const FormSchema = z.object({
   aspects: z.array(z.string()),
@@ -34,6 +34,12 @@ const FormSchema = z.object({
       )
       .optional(),
   }),
+  slides: z.array(
+    z.object({
+      background: z.string().optional(),
+      duration: z.number().optional(),
+    }),
+  ),
 });
 
 export type FormType = UseFormReturn<
@@ -43,6 +49,10 @@ export type FormType = UseFormReturn<
       type: string;
       stations?: string[];
     };
+    slides: {
+      background?: string;
+      duration?: number;
+    }[];
   },
   any,
   undefined
@@ -56,6 +66,7 @@ export function SequenceForm() {
       location: {
         type: "unspecified",
       },
+      slides: [],
     },
   });
 
@@ -78,7 +89,7 @@ export function SequenceForm() {
         {form.getValues("location.type") === "stations" && (
           <LocationStationDetails form={form} />
         )}
-        <Slide />
+        <SlideCarousel form={form} />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
