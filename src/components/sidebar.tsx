@@ -5,8 +5,12 @@ import { Button } from "./ui/button";
 
 const routes = [
   {
-    name: "Media",
+    name: "Sequences",
     route: "/",
+  },
+  {
+    name: "Media",
+    route: "/media",
   },
   {
     name: "Advertisement",

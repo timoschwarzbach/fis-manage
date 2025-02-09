@@ -6,6 +6,7 @@ import Header from "~/components/header";
 import Sidebar from "~/components/sidebar";
 import { Separator } from "~/components/ui/separator";
 import { Toaster } from "~/components/ui/toaster";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   title: "fis manage",
@@ -19,17 +20,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable} light`}>
       <body>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <div className="flex grow flex-row items-stretch">
-            <Sidebar />
-            <div>
-              <Separator orientation="vertical" />
+        <TRPCReactProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <div className="flex grow flex-row items-stretch">
+              <Sidebar />
+              <div>
+                <Separator orientation="vertical" />
+              </div>
+              <main className="w-full">{children}</main>
             </div>
-            <main className="w-full">{children}</main>
           </div>
-        </div>
-        <Toaster />
+          <Toaster />
+        </TRPCReactProvider>
       </body>
     </html>
   );

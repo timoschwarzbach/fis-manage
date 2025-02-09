@@ -5,6 +5,19 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "th.bing.com",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+      },
+    ],
+  },
+};
 
 export default config;

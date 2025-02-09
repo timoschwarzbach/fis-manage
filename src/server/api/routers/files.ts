@@ -60,7 +60,7 @@ export const filesRouter = createTRPCRouter({
         // Get the file name in bucket from the database
         const saveFilesInfo = await ctx.db.file.createMany({
           data: publicUrls.map((presignedUrl: any) => ({
-            bucket: process.env.S3_BUCKET_NAME,
+            bucket: bucketName,
             fileName: presignedUrl.fileNameInBucket,
             originalName: presignedUrl.originalFileName,
             size: presignedUrl.fileSize,
