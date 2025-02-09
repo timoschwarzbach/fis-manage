@@ -12,6 +12,7 @@ export const env = createEnv({
     MINIO_ACCESS_KEY: z.string(),
     MINIO_SECRET_KEY: z.string(),
     MINIO_BUCKET_NAME: z.string(),
+    DATABASE_URL: z.string().url(),
   },
 
   /**
@@ -33,6 +34,7 @@ export const env = createEnv({
     MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME,
+    DATABASE_URL: process.env.DATABASE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
