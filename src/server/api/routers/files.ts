@@ -76,5 +76,11 @@ export const filesRouter = createTRPCRouter({
         }
       }
     }),
-
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.file.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  })
 });
