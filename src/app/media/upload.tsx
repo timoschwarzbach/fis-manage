@@ -103,6 +103,7 @@ export function UploadFile() {
             <Input
               id="upload-media"
               type="file"
+              accept=".png,.jpg,.jpeg,.webp"
               multiple
               disabled={loading}
               onChange={handleFileChange}
