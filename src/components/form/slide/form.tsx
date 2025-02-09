@@ -28,12 +28,30 @@ export function EditSlideContent({
           <CardTitle>Slide {index + 1}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-8">
-          <SlideBackgroundSettings form={form} index={index} />
-          <SlideBottomSettings form={form} index={index} />
-          <SlideDurationSettings form={form} index={index} />
-          <Button className="self-end" variant="destructive">
-            Delete slide
-          </Button>
+          <FormField
+            control={form.control}
+            name={`slides.${index}`}
+            render={({ field }) => (
+              <>
+                <SlideBackgroundSettings form={form} index={index} />
+                <SlideBottomSettings form={form} index={index} />
+                <SlideDurationSettings form={form} index={index} />
+                <Button
+                  className="self-end"
+                  variant="destructive"
+                  onClick={() => {
+                    form.setValue(
+                      "slides",
+                      form.getValues("slides").filter((_, i) => i !== index),
+                    );
+                    // todo: because the key is the index, currently re-rendering of the form is not functioning as intended
+                  }}
+                >
+                  Delete slide
+                </Button>
+              </>
+            )}
+          />
         </CardContent>
       </Card>
     </div>

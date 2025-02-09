@@ -36,7 +36,7 @@ export function SlideSection({ form }: { form: FormType }) {
           <>
             {field.value.map((_, index) => (
               <EditSlideContent
-                key={index}
+                key={index} // random uuid instead?
                 form={form}
                 index={index}
                 current={current}
