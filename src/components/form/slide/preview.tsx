@@ -26,7 +26,7 @@ function PreviewRender({
   );
 
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded bg-neutral-300">
+    <div className="relative aspect-video w-full overflow-hidden rounded bg-neutral-300 text-white">
       {fileQuery.isLoading && <Skeleton className="absolute h-full w-full" />}
       {fileQuery.data && (
         <Image
@@ -45,12 +45,12 @@ function PreviewRender({
           <>
             <div
               data-background={slide.bottom.background}
-              className="h-20 flex-1 bg-gradient-to-b from-transparent data-[background=true]:to-black/60"
+              className="flex-1 bg-gradient-to-b from-transparent data-[background=true]:to-black/60"
             ></div>
 
             <div
               data-background={slide.bottom.background}
-              className="flex flex-col gap-4 p-8 data-[background=true]:bg-black/60"
+              className="flex flex-col p-4 data-[background=true]:bg-black/60"
             >
               <span className="text-base">{slide.bottom.title}</span>
               <span className="text-lg font-bold">
