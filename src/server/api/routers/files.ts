@@ -62,6 +62,7 @@ export const filesRouter = createTRPCRouter({
           data: publicUrls.map((presignedUrl: any) => ({
             bucket: bucketName,
             fileName: presignedUrl.fileNameInBucket,
+            fileType: "image",
             originalName: presignedUrl.originalFileName,
             size: presignedUrl.fileSize,
             url: presignedUrl.publicUrl,

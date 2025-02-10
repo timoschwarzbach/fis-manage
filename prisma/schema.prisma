@@ -12,9 +12,19 @@ model File {
 
   bucket String?
   fileName String?
+  fileType String?
   originalName String?
   size Float?
   url String?
+
+  createdAt DateTime @default(now())
+}
+
+model Sequence {
+  id String @id @default(cuid())
+
+  active Boolean
+  json String?
 
   createdAt DateTime @default(now())
 }
