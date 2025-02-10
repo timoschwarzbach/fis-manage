@@ -13,8 +13,10 @@ import {
   LocationStationDetails,
 } from "~/components/form/location";
 import { SlideSection } from "~/components/form/slide/section";
+import { ActiveSettings } from "~/components/form/active";
 
 const FormSchema = z.object({
+  active: z.boolean(),
   aspects: z.array(z.string()),
   location: z.object({
     type: z.string(),
@@ -52,6 +54,7 @@ const FormSchema = z.object({
 
 export type FormType = UseFormReturn<
   {
+    active: boolean;
     aspects: string[];
     location: {
       type: string;
@@ -76,6 +79,7 @@ export function SequenceForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      active: false,
       aspects: ["aspect-16-9"],
       location: {
         type: "unspecified",
@@ -98,6 +102,7 @@ export function SequenceForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <ActiveSettings form={form} />
         <AspectSettings form={form} />
         <LocationSettings form={form} />
         {form.getValues("location.type") === "stations" && (
