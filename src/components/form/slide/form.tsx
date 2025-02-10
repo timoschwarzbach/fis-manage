@@ -11,6 +11,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { SlideBottomSettings } from "./bottom";
+import { SlideBackgroundSettings } from "./background";
 
 export function EditSlideContent({
   form,
@@ -55,40 +56,6 @@ export function EditSlideContent({
         </CardContent>
       </Card>
     </div>
-  );
-}
-
-function SlideBackgroundSettings({
-  form,
-  index,
-}: {
-  form: FormType;
-  index: number;
-}) {
-  return (
-    <FormField
-      control={form.control}
-      name={`slides.${index}.background`}
-      render={({ field }) => {
-        return (
-          <FormItem>
-            <div className="mb-4">
-              <FormLabel className="text-base">Background</FormLabel>
-              <FormDescription>
-                Choose a static image or a video as a background
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Input
-                placeholder="not yet implemented: paste id here"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        );
-      }}
-    />
   );
 }
 

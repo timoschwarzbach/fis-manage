@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { createPresignedUrlToUpload, PresignedUrlProp } from "~/lib/server/minio";
+import { createPresignedUrlToDownload, createPresignedUrlToUpload, PresignedUrlProp } from "~/lib/server/minio";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -82,5 +82,23 @@ export const filesRouter = createTRPCRouter({
         createdAt: "desc",
       },
     })
-  })
+  }),
+  getImageUrl: publicProcedure.input(z.object({
+    bucketName: z.string(),
+    fileName: z.string()
+  })).query(async ({ input }) => {
+    return await createPresignedUrlToDownload(input);
+  }),
+  getImageUrlFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const file = await ctx.db.file.findUnique({
+      where: {
+        id: input
+      }
+    })
+    if (!file || !file.bucket || !file.fileName) return null;
+    return await createPresignedUrlToDownload({
+      bucketName: file.bucket,
+      fileName: file.fileName
+    });
+  }),
 });
