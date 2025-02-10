@@ -14,6 +14,7 @@ import {
 } from "~/components/form/location";
 import { SlideSection } from "~/components/form/slide/section";
 import { ActiveSettings } from "~/components/form/active";
+import { api } from "~/trpc/react";
 
 const FormSchema = z.object({
   active: z.boolean(),
@@ -76,6 +77,7 @@ export type FormType = UseFormReturn<
 >;
 
 export function SequenceForm() {
+  const createOrUpdate = api.sequences.createOrUpdate.useMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -88,15 +90,31 @@ export function SequenceForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const { active, ...cleanedData } = data;
+      const res = await createOrUpdate.mutateAsync({
+        id: "0",
+        active: data.active,
+        json: JSON.stringify(cleanedData),
+      });
+      toast({
+        title: "You submitted the following values:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">
+              {JSON.stringify(cleanedData, null, 2)}
+            </code>
+          </pre>
+        ),
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "An error occurred",
+        description: "Please try again later.",
+      });
+    }
   }
 
   return (
