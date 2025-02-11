@@ -9,6 +9,14 @@ export const sequencesRouter = createTRPCRouter({
       },
     })
   }),
+  getActive: publicProcedure.query(async ({ ctx }) => {
+    const sequences = await ctx.db.sequence.findMany({
+      where: {
+        active: true,
+      },
+    })
+    return await Promise.all(sequences.map(async (sequence) => JSON.parse(sequence.json ?? "")))
+  }),
   createOrUpdate: publicProcedure.input(z.object({
     id: z.string().optional(),
     active: z.boolean(),
