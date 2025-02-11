@@ -8,7 +8,7 @@ const bucketName = process.env.MINIO_BUCKET_NAME!;
 const expiry = 60 * 60; // 1 hour
 
 export const filesRouter = createTRPCRouter({
-  s3Presigned: publicProcedure
+  upload: publicProcedure
     .input(z.array(z.object({
       originalFileName: z.string(),
       fileSize: z.number()
@@ -84,22 +84,25 @@ export const filesRouter = createTRPCRouter({
       },
     })
   }),
-  getImageUrl: publicProcedure.input(z.object({
+  getDownloadUrl: publicProcedure.input(z.object({
     bucketName: z.string(),
     fileName: z.string()
   })).query(async ({ input }) => {
     return await createPresignedUrlToDownload(input);
   }),
-  getImageUrlFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+  getDownloadUrlFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const file = await ctx.db.file.findUnique({
       where: {
         id: input
       }
     })
     if (!file || !file.bucket || !file.fileName) return null;
-    return await createPresignedUrlToDownload({
-      bucketName: file.bucket,
-      fileName: file.fileName
-    });
+    return {
+      url: await createPresignedUrlToDownload({
+        bucketName: file.bucket,
+        fileName: file.fileName
+      }),
+      type: file.fileType
+    }
   }),
 });

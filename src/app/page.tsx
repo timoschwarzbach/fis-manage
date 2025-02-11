@@ -2,7 +2,7 @@ import { Sequence } from "@prisma/client";
 import Link from "next/link";
 import { Pill } from "~/components/ui/pill";
 import { api } from "~/trpc/server";
-import { FormType } from "./sequence/[id]/form";
+import { Media } from "~/components/media";
 
 export default async function HomePage() {
   const sequences = await api.sequences.getAll();
@@ -39,22 +39,20 @@ function SequenceItem({ sequence }: { sequence: Sequence }) {
   return (
     <Link href={`/sequence/${sequence.id}`}>
       <div className="flex w-96 flex-col gap-4 rounded-lg p-2 pb-20 transition hover:bg-neutral-100">
-        <SequenceThumbnail />
+        <Media id={data.slides[0]?.background ?? ""} />
         <div className="flex flex-row flex-wrap gap-2">
           {data.aspects.map((aspect) => (
             <Pill key={"aspect-" + aspect}>{aspect}</Pill>
           ))}
-          <Pill>8 sec</Pill>
-          <Pill>
-            {data.slides.length} {data.slides.length === 1 ? "Slide" : "Slides"}
-          </Pill>
+          {data.slides.length > 0 && (
+            <Pill>
+              {data.slides.length}{" "}
+              {data.slides.length === 1 ? "Slide" : "Slides"}
+            </Pill>
+          )}
           {data.location.stations && <Pill>Conditional location</Pill>}
         </div>
       </div>
     </Link>
   );
-}
-
-function SequenceThumbnail() {
-  return <div className="aspect-video w-full rounded bg-neutral-300" />;
 }

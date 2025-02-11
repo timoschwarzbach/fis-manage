@@ -21,7 +21,7 @@ function PreviewRender({
     };
   };
 }) {
-  const fileQuery = api.files.getImageUrlFromId.useQuery(
+  const fileQuery = api.files.getDownloadUrlFromId.useQuery(
     slide.background ?? "",
   );
 

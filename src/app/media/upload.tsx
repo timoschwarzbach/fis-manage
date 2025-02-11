@@ -25,7 +25,7 @@ export function UploadFile() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const getPresignedUrls = api.files.s3Presigned.useMutation();
+  const getPresignedUrls = api.files.upload.useMutation();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

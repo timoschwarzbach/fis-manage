@@ -136,7 +136,7 @@ function MediaItem({
     return <>invalid file</>;
   }
 
-  const url = api.files.getImageUrl.useQuery({
+  const url = api.files.getDownloadUrl.useQuery({
     bucketName: file.bucket,
     fileName: file.fileName,
   });
