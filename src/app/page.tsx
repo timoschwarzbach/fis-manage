@@ -41,6 +41,7 @@ function SequenceItem({ sequence }: { sequence: Sequence }) {
       <div className="flex w-96 flex-col gap-4 rounded-lg p-2 pb-20 transition hover:bg-neutral-100">
         <Media id={data.slides[0]?.background ?? ""} />
         <div className="flex flex-row flex-wrap gap-2">
+          {sequence.active && <Pill>Active</Pill>}
           {data.aspects.map((aspect) => (
             <Pill key={"aspect-" + aspect}>{aspect}</Pill>
           ))}
