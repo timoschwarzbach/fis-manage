@@ -15,6 +15,8 @@ import {
 import { SlideSection } from "~/components/form/slide/section";
 import { ActiveSettings } from "~/components/form/active";
 import { api } from "~/trpc/react";
+import { Sequence } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   active: z.boolean(),
@@ -76,7 +78,8 @@ export type FormType = UseFormReturn<
   undefined
 >;
 
-export function SequenceForm() {
+export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
+  const router = useRouter();
   const createOrUpdate = api.sequences.createOrUpdate.useMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -87,6 +90,7 @@ export function SequenceForm() {
         type: "unspecified",
       },
       slides: [],
+      ...JSON.parse(sequence?.json ?? ""),
     },
   });
 
@@ -94,7 +98,7 @@ export function SequenceForm() {
     try {
       const { active, ...cleanedData } = data;
       const res = await createOrUpdate.mutateAsync({
-        id: "0",
+        id: sequence?.id,
         active: data.active,
         json: JSON.stringify(cleanedData),
       });
@@ -108,6 +112,7 @@ export function SequenceForm() {
           </pre>
         ),
       });
+      router.push("/sequence");
     } catch (error) {
       console.error(error);
       toast({

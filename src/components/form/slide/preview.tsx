@@ -1,7 +1,5 @@
-import Image from "next/image";
 import { FormType } from "~/app/sequence/[id]/form";
-import { Skeleton } from "~/components/ui/skeleton";
-import { api } from "~/trpc/react";
+import { Media } from "~/components/media";
 
 export function Slide({ form, index }: { form: FormType; index: number }) {
   const slide = form.watch(`slides.${index}`);
@@ -21,22 +19,9 @@ function PreviewRender({
     };
   };
 }) {
-  const fileQuery = api.files.getDownloadUrlFromId.useQuery(
-    slide.background ?? "",
-  );
-
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded bg-neutral-300 text-white">
-      {fileQuery.isLoading && <Skeleton className="absolute h-full w-full" />}
-      {fileQuery.data && (
-        <Image
-          className="absolute h-full w-full object-cover"
-          src={fileQuery.data}
-          alt={"Uploaded image"}
-          width={400}
-          height={300}
-        />
-      )}
+      <Media id={slide.background ?? ""} />
       <div className="absolute flex h-full w-full flex-col">
         {/* <div className="flex h-full flex-[3] bg-transparent p-8">
           {data.badge && <img className="h-14" src={data.badge} />}

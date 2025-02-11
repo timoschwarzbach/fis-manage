@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 const routes = [
   {
     name: "Sequences",
-    route: "/",
+    route: "/sequence",
   },
   {
     name: "Media",
