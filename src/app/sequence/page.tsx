@@ -17,10 +17,6 @@ export default async function HomePage() {
 
 type SequenceItem = {
   aspects: string[];
-  location: {
-    type: string;
-    stations?: string[];
-  };
   slides: {
     background?: string;
     bottom?: {
@@ -34,8 +30,8 @@ type SequenceItem = {
 };
 
 function SequenceItem({ sequence }: { sequence: Sequence }) {
-  if (!sequence.json) return <>invalid sequence</>;
-  const data = JSON.parse(sequence.json) as SequenceItem; // good enough for now
+  if (!sequence.displayJSON) return <>invalid sequence</>;
+  const data = JSON.parse(sequence.displayJSON) as SequenceItem; // good enough for now
   return (
     <Link href={`/sequence/${sequence.id}`}>
       <div className="flex w-96 flex-col gap-4 rounded-lg p-2 pb-20 transition hover:bg-neutral-100">
@@ -51,7 +47,7 @@ function SequenceItem({ sequence }: { sequence: Sequence }) {
               {data.slides.length === 1 ? "Slide" : "Slides"}
             </Pill>
           )}
-          {data.location.stations && <Pill>Conditional location</Pill>}
+          {sequence.locations.length > 0 && <Pill>Conditional location</Pill>}
         </div>
       </div>
     </Link>

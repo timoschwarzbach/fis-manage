@@ -24,7 +24,11 @@ model Sequence {
   id String @id @default(cuid())
 
   active Boolean
-  json String?
+  locations String[]
+  category String
+
+  displayJSON String
 
   createdAt DateTime @default(now())
+  lastUpdated DateTime @default(now())
 }

@@ -84,23 +84,28 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      active: false,
+      active: sequence?.active ?? false,
       aspects: ["aspect-16-9"],
       location: {
         type: "unspecified",
       },
       slides: [],
-      ...JSON.parse(sequence?.json ?? ""),
+      ...JSON.parse(sequence?.displayJSON ?? "{}"),
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const { active, ...cleanedData } = data;
+      const { active, location, ...cleanedData } = data;
       const res = await createOrUpdate.mutateAsync({
         id: sequence?.id,
         active: data.active,
-        json: JSON.stringify(cleanedData),
+        locations:
+          location.type === "stations" && location.stations
+            ? location.stations
+            : [],
+        category: "default",
+        displayJSON: JSON.stringify(cleanedData),
       });
       toast({
         title: "You submitted the following values:",
