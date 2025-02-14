@@ -12,7 +12,7 @@ export async function GET(_request: Request) {
 
   const insert = db.prepare('INSERT INTO sequences (id, active, category, locations, displayJSON, lastUpdated) VALUES (@id, @active, @category, @locations, @displayJSON, @lastUpdated)');
   const insertMany = db.transaction((sequences: Sequence[]) => {
-    for (const sequence of sequences) insert.run({ ...sequence, id: sequence.id, active: sequence.active, category: sequence.category, locations: sequence.locations?.join('-'), displayJSON: sequence.displayJSON, lastUpdated: sequence.lastUpdated });
+    for (const sequence of sequences) insert.run({ ...sequence, id: sequence.id, active: sequence.active ? "true" : "false", category: sequence.category, locations: JSON.stringify(sequence.locations), displayJSON: sequence.displayJSON, lastUpdated: sequence.lastUpdated.toISOString() });
   });
   insertMany(sequences);
 

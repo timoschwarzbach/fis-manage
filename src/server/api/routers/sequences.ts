@@ -15,7 +15,8 @@ export const sequencesRouter = createTRPCRouter({
         active: true,
       },
     })
-    return await Promise.all(sequences.map(async (sequence) => JSON.parse(sequence.displayJSON ?? "")))
+    return sequences
+    // return await Promise.all(sequences.map(async (sequence) => JSON.parse(sequence.displayJSON ?? "")))
   }),
   getFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return await ctx.db.sequence.findFirst({
