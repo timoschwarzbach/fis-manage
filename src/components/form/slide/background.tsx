@@ -1,7 +1,7 @@
-import { File } from "@prisma/client";
+import { type File } from "@prisma/client";
 import Image from "next/image";
-import { use, useEffect, useState } from "react";
-import { FormType } from "~/app/sequence/[id]/form";
+import { useEffect, useState } from "react";
+import { type FormType } from "~/app/sequence/[id]/form";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,
@@ -65,7 +65,7 @@ function BackgroundSelectSheet({
   onChange,
 }: {
   value: string | undefined;
-  onChange: (...event: any[]) => void;
+  onChange: (...event: unknown[]) => void;
 }) {
   const getFiles = api.files.getAll.useQuery();
   const [selected, setSelected] = useState(value ?? "");
@@ -87,7 +87,7 @@ function BackgroundSelectSheet({
       <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Select background</SheetTitle>
-          <SheetDescription>Click save when you're done.</SheetDescription>
+          <SheetDescription>Click save when you&apos;re done.</SheetDescription>
         </SheetHeader>
         <ScrollArea className="w-full pr-4">
           <div className="grid gap-2">

@@ -93,7 +93,7 @@ export function UploadFile() {
         <DialogHeader>
           <DialogTitle>Upload file</DialogTitle>
           <DialogDescription>
-            Upload a file here. Click save when you're done.
+            Upload a file here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 

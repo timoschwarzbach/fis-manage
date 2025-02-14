@@ -1,4 +1,4 @@
-import { Sequence } from "@prisma/client";
+import { type Sequence } from "@prisma/client";
 import Link from "next/link";
 import { Pill } from "~/components/ui/pill";
 import { api } from "~/trpc/server";
@@ -15,36 +15,32 @@ export default async function HomePage() {
   );
 }
 
-type SequenceItem = {
-  aspects: string[];
-  slides: {
-    background?: string;
-    bottom?: {
-      visible?: boolean;
-      background?: boolean;
-      title?: string;
-      description?: string;
-    };
-    duration?: number;
-  }[];
-};
+type Slides = {
+  background?: string;
+  bottom?: {
+    visible?: boolean;
+    background?: boolean;
+    title?: string;
+    description?: string;
+  };
+  duration?: number;
+}[];
 
 function SequenceItem({ sequence }: { sequence: Sequence }) {
-  if (!sequence.displayJSON) return <>invalid sequence</>;
-  const data = JSON.parse(sequence.displayJSON) as SequenceItem; // good enough for now
+  if (!sequence.slides) return <>invalid sequence</>;
+  const slides = JSON.parse(sequence.slides) as Slides; // good enough for now
   return (
     <Link href={`/sequence/${sequence.id}`}>
       <div className="flex w-96 flex-col gap-4 rounded-lg p-2 pb-20 transition hover:bg-neutral-100">
-        <Media id={data.slides[0]?.background ?? ""} />
+        <Media id={slides[0]?.background ?? ""} />
         <div className="flex flex-row flex-wrap gap-2">
           {sequence.active && <Pill>Active</Pill>}
-          {data.aspects.map((aspect) => (
+          {sequence.aspects.map((aspect) => (
             <Pill key={"aspect-" + aspect}>{aspect}</Pill>
           ))}
-          {data.slides.length > 0 && (
+          {slides.length > 0 && (
             <Pill>
-              {data.slides.length}{" "}
-              {data.slides.length === 1 ? "Slide" : "Slides"}
+              {slides.length} {slides.length === 1 ? "Slide" : "Slides"}
             </Pill>
           )}
           {sequence.locations.length > 0 && <Pill>Conditional location</Pill>}

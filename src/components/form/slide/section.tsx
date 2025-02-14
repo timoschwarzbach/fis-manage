@@ -1,21 +1,21 @@
 import React from "react";
-import { FormType } from "~/app/sequence/[id]/form";
+import { type FormType } from "~/app/sequence/[id]/form";
 import { FormField, FormLabel } from "~/components/ui/form";
 import { PreviewCarousel } from "./carousel";
 import { EditSlideContent } from "./form";
-import { CarouselApi } from "~/components/ui/carousel";
+import { type CarouselApi } from "~/components/ui/carousel";
 
 export function SlideSection({ form }: { form: FormType }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  // const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
     if (!api) {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
+    // setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
 
     api.on("select", () => {

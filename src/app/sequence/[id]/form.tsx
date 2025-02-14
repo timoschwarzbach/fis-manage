@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 import { toast } from "~/hooks/use-toast";
@@ -15,7 +15,7 @@ import {
 import { SlideSection } from "~/components/form/slide/section";
 import { ActiveSettings } from "~/components/form/active";
 import { api } from "~/trpc/react";
-import { Sequence } from "@prisma/client";
+import { type Sequence } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
@@ -74,7 +74,9 @@ export type FormType = UseFormReturn<
       duration?: number;
     }[];
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   any,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   undefined
 >;
 
@@ -83,6 +85,7 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   const createOrUpdate = api.sequences.createOrUpdate.useMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     defaultValues: {
       active: sequence?.active ?? false,
       aspects: ["aspect-16-9"],
@@ -90,30 +93,29 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
         type: "unspecified",
       },
       slides: [],
-      ...JSON.parse(sequence?.displayJSON ?? "{}"),
+      ...JSON.parse(sequence?.slides ?? "[]"),
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const { active, location, ...cleanedData } = data;
-      const res = await createOrUpdate.mutateAsync({
+      const { active, location, slides, aspects } = data;
+      await createOrUpdate.mutateAsync({
         id: sequence?.id,
-        active: data.active,
+        active,
         locations:
           location.type === "stations" && location.stations
             ? location.stations
             : [],
         category: "default",
-        displayJSON: JSON.stringify(cleanedData),
+        aspects,
+        slides: JSON.stringify(slides),
       });
       toast({
         title: "You submitted the following values:",
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">
-              {JSON.stringify(cleanedData, null, 2)}
-            </code>
+            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
           </pre>
         ),
       });

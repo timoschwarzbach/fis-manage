@@ -1,4 +1,4 @@
-import { FormType } from "~/app/sequence/[id]/form";
+import { type FormType } from "~/app/sequence/[id]/form";
 import {
   FormField,
   FormItem,

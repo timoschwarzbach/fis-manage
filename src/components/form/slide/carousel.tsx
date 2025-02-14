@@ -1,8 +1,8 @@
-import { FormType } from "~/app/sequence/[id]/form";
+import { type FormType } from "~/app/sequence/[id]/form";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Carousel,
-  CarouselApi,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,

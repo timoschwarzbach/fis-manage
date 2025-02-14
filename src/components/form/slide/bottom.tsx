@@ -1,4 +1,4 @@
-import { FormType } from "~/app/sequence/[id]/form";
+import { type FormType } from "~/app/sequence/[id]/form";
 import {
   FormControl,
   FormDescription,
@@ -22,7 +22,7 @@ export function SlideBottomSettings({
     <FormField
       control={form.control}
       name={`slides.${index}.bottom`}
-      render={({ field }) => {
+      render={() => {
         return (
           <FormField
             control={form.control}

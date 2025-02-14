@@ -1,4 +1,4 @@
-import { File } from "@prisma/client";
+import { type File } from "@prisma/client";
 import Image from "next/image";
 import { api } from "~/trpc/server";
 import { UploadFile } from "./upload";

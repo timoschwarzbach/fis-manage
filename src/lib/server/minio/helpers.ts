@@ -44,6 +44,7 @@ export async function checkFileExistsInBucket({
   try {
     await MinioClient.statObject(bucketName, fileName);
   } catch (error) {
+    console.error(error);
     return false;
   }
   return true;

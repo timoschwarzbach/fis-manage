@@ -1,4 +1,4 @@
-import { FormType } from "~/app/sequence/[id]/form";
+import { type FormType } from "~/app/sequence/[id]/form";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
@@ -32,7 +32,7 @@ export function EditSlideContent({
           <FormField
             control={form.control}
             name={`slides.${index}`}
-            render={({ field }) => (
+            render={() => (
               <>
                 <SlideBackgroundSettings form={form} index={index} />
                 <SlideBottomSettings form={form} index={index} />

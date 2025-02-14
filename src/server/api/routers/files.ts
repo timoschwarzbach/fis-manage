@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { createPresignedUrlToDownload, createPresignedUrlToUpload, PresignedUrlProp } from "~/lib/server/minio";
+import { createPresignedUrlToDownload, createPresignedUrlToUpload, type PresignedUrlProp } from "~/lib/server/minio";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -58,8 +58,8 @@ export const filesRouter = createTRPCRouter({
         console.log({ publicUrls });
 
         // Get the file name in bucket from the database
-        const saveFilesInfo = await ctx.db.file.createMany({
-          data: publicUrls.map((presignedUrl: any) => ({
+        await ctx.db.file.createMany({
+          data: publicUrls.map((presignedUrl) => ({
             bucket: bucketName,
             fileName: presignedUrl.fileNameInBucket,
             fileType: "image",
@@ -96,6 +96,7 @@ export const filesRouter = createTRPCRouter({
         id: input
       }
     })
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (!file || !file.bucket || !file.fileName) return null;
     return {
       url: await createPresignedUrlToDownload({

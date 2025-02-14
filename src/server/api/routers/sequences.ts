@@ -28,9 +28,10 @@ export const sequencesRouter = createTRPCRouter({
   createOrUpdate: publicProcedure.input(z.object({
     id: z.string().optional(),
     active: z.boolean(),
-    locations: z.array(z.string()),
     category: z.string(),
-    displayJSON: z.string(),
+    locations: z.array(z.string()),
+    aspects: z.array(z.string()),
+    slides: z.string(),
   })).mutation(async ({ ctx, input }) => {
     const existing = await ctx.db.sequence.findFirst({ where: { id: input.id } })
     if (existing && input.id) {
