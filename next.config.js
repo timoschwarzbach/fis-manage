@@ -16,6 +16,14 @@ const config = {
         protocol: "http",
         hostname: "127.0.0.1",
       },
+      {
+        protocol: "http",
+        hostname: "host.docker.internal",
+      },
+      {
+        protocol: "http",
+        hostname: "minio",
+      },
     ],
   },
   output: "standalone",
