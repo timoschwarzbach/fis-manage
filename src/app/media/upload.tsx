@@ -23,6 +23,7 @@ import { api } from "~/trpc/react";
 
 export function UploadFile() {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const getPresignedUrls = api.files.upload.useMutation();
@@ -70,6 +71,7 @@ export function UploadFile() {
             title: "Files uploaded successfully",
           });
           setFiles([]);
+          setOpen(false);
         });
       }
     } catch (error) {
@@ -90,9 +92,11 @@ export function UploadFile() {
   };
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => setOpen(open)} open={open}>
       <DialogTrigger asChild>
-        <Button variant="outline">Upload file</Button>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+          Upload file
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
