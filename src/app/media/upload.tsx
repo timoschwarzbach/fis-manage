@@ -26,6 +26,7 @@ export function UploadFile() {
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const getPresignedUrls = api.files.upload.useMutation();
+  const utils = api.useUtils();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,8 +52,14 @@ export function UploadFile() {
         }
 
         // Get presigned URLs from the API
-        const presignedUrls =
-          await getPresignedUrls.mutateAsync(shortFileProps);
+        const presignedUrls = await getPresignedUrls.mutateAsync(
+          shortFileProps,
+          {
+            onSuccess() {
+              utils.files.getAll.invalidate();
+            },
+          },
+        );
         if ("error" in presignedUrls) {
           throw new Error(presignedUrls.error);
         }
@@ -64,9 +71,6 @@ export function UploadFile() {
           });
           setFiles([]);
         });
-
-        // reload
-        window.location.reload();
       }
     } catch (error) {
       toast({

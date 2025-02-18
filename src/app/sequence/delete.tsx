@@ -6,13 +6,23 @@ import { Button } from "~/components/ui/button";
 
 export function DeleteSequenceButton({ sequence }: { sequence: Sequence }) {
   const deleteSequence = api.sequences.delete.useMutation();
+  const utils = api.useUtils();
   const { toast } = useToast();
   return (
     <Button
       className="absolute right-2 top-2 hidden group-hover:block"
       variant="destructive"
-      onClick={async () => {
-        const success = await deleteSequence.mutateAsync(sequence.id);
+      onClick={async (e) => {
+        e.preventDefault();
+        const success = await deleteSequence.mutateAsync(sequence.id, {
+          onSuccess(input) {
+            utils.sequences.getAll.invalidate();
+            if (input.active) {
+              utils.sequences.getActive.invalidate();
+            }
+            utils.sequences.getFromId.invalidate(input.id);
+          },
+        });
         if (success) {
           toast({
             title: "Sequence deleted",

@@ -20,26 +20,28 @@ export function SequenceItem({ sequence }: { sequence: Sequence }) {
   if (!sequence.slides) return <>invalid sequence</>;
   const slides = JSON.parse(sequence.slides) as Slides; // good enough for now
   return (
-    <Link
-      href={`/sequence/${sequence.id}`}
-      className="group relative flex w-96 flex-col gap-4 pb-8"
-    >
-      <Card className="aspect-video w-full overflow-hidden">
-        <Media id={slides[0]?.background ?? ""} />
-      </Card>
-      <div className="flex flex-row flex-wrap gap-2">
-        {sequence.active && <Pill>Active</Pill>}
-        {sequence.aspects.map((aspect) => (
-          <Pill key={"aspect-" + aspect}>{aspect}</Pill>
-        ))}
-        {slides.length > 0 && (
-          <Pill>
-            {slides.length} {slides.length === 1 ? "Slide" : "Slides"}
-          </Pill>
-        )}
-        {sequence.locations.length > 0 && <Pill>Conditional location</Pill>}
-      </div>
+    <div className="group relative w-96">
+      <Link
+        href={`/sequence/${sequence.id}`}
+        className="flex flex-col gap-4 pb-8"
+      >
+        <Card className="aspect-video w-full overflow-hidden">
+          <Media id={slides[0]?.background ?? ""} />
+        </Card>
+        <div className="flex flex-row flex-wrap gap-2">
+          {sequence.active && <Pill>Active</Pill>}
+          {sequence.aspects.map((aspect) => (
+            <Pill key={"aspect-" + aspect}>{aspect}</Pill>
+          ))}
+          {slides.length > 0 && (
+            <Pill>
+              {slides.length} {slides.length === 1 ? "Slide" : "Slides"}
+            </Pill>
+          )}
+          {sequence.locations.length > 0 && <Pill>Conditional location</Pill>}
+        </div>
+      </Link>
       <DeleteSequenceButton sequence={sequence} />
-    </Link>
+    </div>
   );
 }
