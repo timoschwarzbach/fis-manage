@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { createPresignedUrlToDownload, createPresignedUrlToUpload, type PresignedUrlProp } from "~/lib/server/minio";
+import { createPresignedUrlToDownload, createPresignedUrlToUpload, deleteFileFromBucket, type PresignedUrlProp } from "~/lib/server/minio";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -106,4 +106,22 @@ export const filesRouter = createTRPCRouter({
       type: file.fileType
     }
   }),
+  delete: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    const fileName = await ctx.db.file.findUnique({
+      where: {
+        id: input
+      }
+    })
+    if (!fileName) return false;
+    await deleteFileFromBucket({
+      bucketName: "fis",
+      fileName: input
+    })
+    await ctx.db.file.delete({
+      where: {
+        id: input
+      }
+    })
+    return true;
+  })
 });

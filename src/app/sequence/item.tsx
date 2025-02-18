@@ -1,0 +1,45 @@
+import { type Sequence } from "@prisma/client";
+import Link from "next/link";
+import { Pill } from "~/components/ui/pill";
+import { Media } from "~/components/media";
+import { Card } from "~/components/ui/card";
+import { DeleteSequenceButton } from "./delete";
+
+type Slides = {
+  background?: string;
+  bottom?: {
+    visible?: boolean;
+    background?: boolean;
+    title?: string;
+    description?: string;
+  };
+  duration?: number;
+}[];
+
+export function SequenceItem({ sequence }: { sequence: Sequence }) {
+  if (!sequence.slides) return <>invalid sequence</>;
+  const slides = JSON.parse(sequence.slides) as Slides; // good enough for now
+  return (
+    <Link
+      href={`/sequence/${sequence.id}`}
+      className="group relative flex w-96 flex-col gap-4 pb-8"
+    >
+      <Card className="aspect-video w-full overflow-hidden">
+        <Media id={slides[0]?.background ?? ""} />
+      </Card>
+      <div className="flex flex-row flex-wrap gap-2">
+        {sequence.active && <Pill>Active</Pill>}
+        {sequence.aspects.map((aspect) => (
+          <Pill key={"aspect-" + aspect}>{aspect}</Pill>
+        ))}
+        {slides.length > 0 && (
+          <Pill>
+            {slides.length} {slides.length === 1 ? "Slide" : "Slides"}
+          </Pill>
+        )}
+        {sequence.locations.length > 0 && <Pill>Conditional location</Pill>}
+      </div>
+      <DeleteSequenceButton sequence={sequence} />
+    </Link>
+  );
+}

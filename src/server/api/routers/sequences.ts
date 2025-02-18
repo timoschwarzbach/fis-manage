@@ -44,5 +44,12 @@ export const sequencesRouter = createTRPCRouter({
         data: input
       })
     }
-  })
+  }),
+  delete: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    return await ctx.db.sequence.delete({
+      where: {
+        id: input
+      }
+    })
+  }),
 });
