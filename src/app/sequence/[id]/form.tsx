@@ -92,8 +92,7 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
       location: {
         type: "unspecified",
       },
-      slides: [],
-      ...JSON.parse(sequence?.slides ?? "[]"),
+      slides: JSON.parse(sequence?.slides ?? "[]"),
     },
   });
 

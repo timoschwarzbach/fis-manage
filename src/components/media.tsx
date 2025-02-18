@@ -31,6 +31,8 @@ export function Media({ id }: { id: string }) {
         controls={true}
         autoPlay={true}
         loop={true}
+        width={400}
+        height={300}
       />
     );
   }

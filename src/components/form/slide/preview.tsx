@@ -1,5 +1,6 @@
 import { type FormType } from "~/app/sequence/[id]/form";
 import { Media } from "~/components/media";
+import { Card } from "~/components/ui/card";
 
 export function Slide({ form, index }: { form: FormType; index: number }) {
   const slide = form.watch(`slides.${index}`);
@@ -20,7 +21,7 @@ function PreviewRender({
   };
 }) {
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded bg-neutral-300 text-white">
+    <Card className="relative aspect-video w-full overflow-hidden bg-neutral-300 text-white">
       <Media id={slide.background ?? ""} />
       <div className="absolute flex h-full w-full flex-col">
         {/* <div className="flex h-full flex-[3] bg-transparent p-8">
@@ -45,6 +46,6 @@ function PreviewRender({
           </>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

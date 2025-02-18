@@ -20,7 +20,11 @@ export function PreviewCarousel({
   setApi: (api: CarouselApi) => void;
 }) {
   return (
-    <Carousel className="w-full max-w-full" setApi={setApi}>
+    <Carousel
+      className="w-full max-w-full"
+      setApi={setApi}
+      opts={{ containScroll: false }}
+    >
       <CarouselContent>
         <FormField
           control={form.control}

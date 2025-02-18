@@ -1,7 +1,7 @@
 import { type File } from "@prisma/client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { type FormType } from "~/app/sequence/[id]/form";
+import { Media } from "~/components/media";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,
@@ -131,24 +131,6 @@ function MediaItem({
   selected: string;
   setSelected: (value: string) => void;
 }) {
-  if (!file.bucket || !file.fileName) {
-    console.log("invalid file", file);
-    return <>invalid file</>;
-  }
-
-  const url = api.files.urlFromName.useQuery({
-    bucketName: file.bucket,
-    fileName: file.fileName,
-  });
-
-  if (url.isLoading) {
-    return <>loading...</>;
-  }
-
-  if (url.isError || !url.data) {
-    return <>error loading image</>;
-  }
-
   return (
     <div
       onClick={() => setSelected(file.id)}
@@ -156,13 +138,7 @@ function MediaItem({
       className="m-1 rounded outline-2 outline-offset-1 data-[selected=true]:outline"
     >
       <div className="aspect-video w-full overflow-hidden rounded bg-neutral-300">
-        <Image
-          className="h-full w-full object-contain"
-          src={url.data}
-          alt={file.fileName ?? "Uploaded image"}
-          width={400}
-          height={300}
-        />
+        <Media id={file.id} />
       </div>
     </div>
   );
