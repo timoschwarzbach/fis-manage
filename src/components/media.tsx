@@ -5,13 +5,13 @@ import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
 
 export function Media({ id }: { id: string }) {
-  const fileQuery = api.files.getDownloadUrlFromId.useQuery(id);
+  const fileQuery = api.files.urlFromId.useQuery(id);
 
   if (fileQuery.isLoading) {
     return <Skeleton className="aspect-video w-full" />;
   }
 
-  if (fileQuery.data?.url && fileQuery.data.type === "image") {
+  if (fileQuery.data?.url && fileQuery.data.type.includes("image")) {
     return (
       <Image
         className="aspect-video w-full object-contain"
@@ -23,11 +23,12 @@ export function Media({ id }: { id: string }) {
     );
   }
 
-  if (fileQuery.data?.url && fileQuery.data.type === "video") {
+  if (fileQuery.data?.url && fileQuery.data.type.includes("video")) {
     return (
       <video
         className="aspect-video w-full object-contain"
-        controls={false}
+        src={fileQuery.data.url}
+        controls={true}
         autoPlay={true}
         loop={true}
       />

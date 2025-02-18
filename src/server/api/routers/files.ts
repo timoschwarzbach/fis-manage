@@ -11,7 +11,8 @@ export const filesRouter = createTRPCRouter({
   upload: publicProcedure
     .input(z.array(z.object({
       originalFileName: z.string(),
-      fileSize: z.number()
+      fileSize: z.number(),
+      type: z.string(),
     })))
     .mutation(async ({ ctx, input: files }) => {
       try {
@@ -23,46 +24,42 @@ export const filesRouter = createTRPCRouter({
 
         const presignedUrls = [] as PresignedUrlProp[];
 
-        if (files.length) {
-          // use Promise.all to get all the presigned urls in parallel
-          await Promise.all(
-            // loop through the files
-            files.map(async (file) => {
-              const fileName = nanoid(12);
+        // use Promise.all to get all the presigned urls in parallel
+        await Promise.all(
+          // loop through the files
+          files.map(async (file) => {
+            const fileName = nanoid(12);
 
-              // get presigned url using s3 sdk
-              const url = await createPresignedUrlToUpload({
-                bucketName,
-                fileName,
-                expiry,
-              });
+            // get presigned url using s3 sdk
+            const url = await createPresignedUrlToUpload({
+              bucketName,
+              fileName,
+              expiry,
+            });
 
-              // add presigned url to the list
-              presignedUrls.push({
-                fileNameInBucket: fileName,
-                originalFileName: file.originalFileName,
-                fileSize: file.fileSize,
-                url,
-              });
-            })
-          );
-        }
+            // add presigned url to the list
+            presignedUrls.push({
+              fileNameInBucket: fileName,
+              originalFileName: file.originalFileName,
+              fileSize: file.fileSize,
+              url,
+              fileType: file.type,
+            });
+          })
+        );
 
-        console.log({ presignedUrls });
-
+        // get public urls
         const publicUrls = presignedUrls.map((presignedUrl) => {
           const publicUrl = `http${process.env.MINIO_SSL === "true" ? "s" : ""}://${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${presignedUrl.fileNameInBucket}`;
           return { ...presignedUrl, publicUrl };
         });
-
-        console.log({ publicUrls });
 
         // Get the file name in bucket from the database
         await ctx.db.file.createMany({
           data: publicUrls.map((presignedUrl) => ({
             bucket: bucketName,
             fileName: presignedUrl.fileNameInBucket,
-            fileType: "image",
+            fileType: presignedUrl.fileType,
             originalName: presignedUrl.originalFileName,
             size: presignedUrl.fileSize,
             url: presignedUrl.publicUrl,
@@ -84,13 +81,13 @@ export const filesRouter = createTRPCRouter({
       },
     })
   }),
-  getDownloadUrl: publicProcedure.input(z.object({
+  urlFromName: publicProcedure.input(z.object({
     bucketName: z.string(),
     fileName: z.string()
   })).query(async ({ input }) => {
     return await createPresignedUrlToDownload(input);
   }),
-  getDownloadUrlFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+  urlFromId: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const file = await ctx.db.file.findUnique({
       where: {
         id: input

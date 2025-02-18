@@ -32,11 +32,12 @@ export function UploadFile() {
     try {
       setLoading(true);
 
-      if (files.length) {
+      if (files.length > 0) {
         // Create the expected ShortFileProp array for the API
         const shortFileProps = files.map((file) => ({
           originalFileName: file.name,
           fileSize: file.size,
+          type: file.type,
         }));
 
         // Validate files before uploading
@@ -61,7 +62,7 @@ export function UploadFile() {
           toast({
             title: "Files uploaded successfully",
           });
-          setFiles([]); // Clear files after successful upload
+          setFiles([]);
         });
 
         // reload
@@ -103,13 +104,13 @@ export function UploadFile() {
             <Input
               id="upload-media"
               type="file"
-              accept=".png,.jpg,.jpeg,.webp"
+              accept=".png,.jpg,.jpeg,.webp,.mp4"
               multiple
               disabled={loading}
               onChange={handleFileChange}
             />
           </div>
-          <DialogFooter>
+          <DialogFooter className="pt-4">
             <Button type="submit" disabled={files.length < 1 || loading}>
               Save changes
             </Button>

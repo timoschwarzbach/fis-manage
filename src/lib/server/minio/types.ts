@@ -6,6 +6,7 @@ export type ShortFileProp = {
 export type PresignedUrlProp = ShortFileProp & {
   url: string;
   fileNameInBucket: string;
+  fileType: string;
 };
 
 export type FileProps = ShortFileProp & {

@@ -1,6 +1,6 @@
 import type { ShortFileProp, PresignedUrlProp } from "~/lib/server/minio";
 
-export const MAX_FILE_SIZE_NEXTJS_ROUTE = 4;
+export const MAX_FILE_SIZE_NEXTJS_ROUTE = 20;
 export const MAX_FILE_SIZE_S3_ENDPOINT = 100;
 export const FILE_NUMBER_LIMIT = 10;
 
@@ -72,7 +72,7 @@ export function validateFiles(
   const totalFileSize = files.reduce((acc, file) => acc + file.fileSize, 0);
   const isFileSizeValid = totalFileSize < maxSizeMB * 1024 * 1024;
   if (!isFileSizeValid) {
-    return `Total file size should be less than ${maxSizeMB} MB`;
+    return `Total file size should be less than ${maxSizeMB} MB. (Your's is ${Math.floor(totalFileSize / 1024 / 1024)} MB)`;
   }
   if (files.length > FILE_NUMBER_LIMIT) {
     return `You can upload maximum ${FILE_NUMBER_LIMIT} files at a time`;

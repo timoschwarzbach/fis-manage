@@ -12,7 +12,6 @@ export default async function MediaPage() {
         <UploadFile />
       </div>
       <div className="flex flex-row flex-wrap items-stretch gap-4">
-        {files.length === 0 && <div>No files uploaded yet</div>}
         {files.map((file) => (
           <MediaItem key={file.id} file={file} />
         ))}
@@ -25,7 +24,7 @@ export default async function MediaPage() {
 function UploadFileAsItem() {
   return (
     <Card className="mb-20 flex aspect-video w-96 items-center justify-center">
-      <span>Upload new file</span>
+      <UploadFile />
     </Card>
   );
   return (
