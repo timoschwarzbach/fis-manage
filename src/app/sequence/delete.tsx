@@ -5,7 +5,22 @@ import { useToast } from "~/hooks/use-toast";
 import { Button } from "~/components/ui/button";
 
 export function DeleteSequenceButton({ sequence }: { sequence: Sequence }) {
-  const deleteSequence = api.sequences.delete.useMutation();
+  const deleteSequence = api.sequences.delete.useMutation({
+    async onMutate(deletedId) {
+      await utils.sequences.getAll.cancel();
+      const prevData = utils.sequences.getAll.getData();
+      utils.sequences.getAll.setData(undefined, (old) =>
+        old?.filter((val) => val.id != deletedId),
+      );
+      return { prevData };
+    },
+    onError(err, deletedId, ctx) {
+      utils.sequences.getAll.setData(undefined, ctx?.prevData);
+    },
+    onSettled() {
+      utils.sequences.getAll.invalidate();
+    },
+  });
   const utils = api.useUtils();
   const { toast } = useToast();
   return (
@@ -16,7 +31,6 @@ export function DeleteSequenceButton({ sequence }: { sequence: Sequence }) {
         e.preventDefault();
         const success = await deleteSequence.mutateAsync(sequence.id, {
           onSuccess(input) {
-            utils.sequences.getAll.invalidate();
             if (input.active) {
               utils.sequences.getActive.invalidate();
             }
