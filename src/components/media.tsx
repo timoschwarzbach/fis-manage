@@ -24,12 +24,15 @@ export function Media({ id }: { id: string }) {
   }
 
   if (fileQuery.data?.url && fileQuery.data.type.includes("video")) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     return (
       <video
         className="aspect-video w-full object-contain"
         src={fileQuery.data.url}
-        controls={true}
-        autoPlay={true}
+        controls={false}
+        autoPlay={!prefersReducedMotion}
         loop={true}
         width={400}
         height={300}
