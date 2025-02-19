@@ -113,7 +113,12 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
             : [],
         category: "default",
         aspects,
-        slides: JSON.stringify(slides),
+        slides: JSON.stringify(
+          slides.map((slide) => {
+            const duration = parseInt(slide.duration ?? "");
+            return { ...slide, duration: duration > 0 ? duration : undefined };
+          }),
+        ),
       });
       toast({
         title: "You submitted the following values:",
