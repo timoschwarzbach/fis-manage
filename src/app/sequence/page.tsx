@@ -3,6 +3,7 @@
 import { api } from "~/trpc/react";
 import { SequenceItem } from "./item";
 import { Skeleton } from "~/components/ui/skeleton";
+import { CreateSequence } from "./create";
 
 export default function SequencePage() {
   const sequenceQuery = api.sequences.getAll.useQuery();
@@ -21,6 +22,7 @@ export default function SequencePage() {
       {sequences.map((sequence) => (
         <SequenceItem key={sequence.id} sequence={sequence} />
       ))}
+      <CreateSequence />
     </div>
   );
 }
