@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 import Database from "better-sqlite3"
 import { NextResponse } from "next/server";
-import { File, type Sequence } from "@prisma/client";
+import { type File, type Sequence } from "@prisma/client";
 
 export async function GET(_request: Request) {
   const sequences = await api.sequences.getActive();

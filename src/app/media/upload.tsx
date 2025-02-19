@@ -57,7 +57,7 @@ export function UploadFile() {
           shortFileProps,
           {
             onSuccess() {
-              utils.files.getAll.invalidate();
+              void utils.files.getAll.invalidate();
             },
           },
         );

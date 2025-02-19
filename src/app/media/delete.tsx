@@ -20,7 +20,7 @@ export function DeleteFileButton({ file }: { file: File }) {
       utils.files.getAll.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.files.getAll.invalidate();
+      void utils.files.getAll.invalidate();
     },
   });
   const { toast } = useToast();

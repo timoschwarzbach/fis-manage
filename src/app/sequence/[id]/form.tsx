@@ -90,13 +90,13 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   const createOrUpdate = api.sequences.createOrUpdate.useMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     defaultValues: {
       active: sequence?.active ?? false,
       aspects: ["aspect-16-9"],
       location: {
         type: "unspecified",
       },
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       slides: JSON.parse(sequence?.slides ?? "[]"),
     },
   });

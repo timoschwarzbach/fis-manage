@@ -18,7 +18,7 @@ export function DeleteSequenceButton({ sequence }: { sequence: Sequence }) {
       utils.sequences.getAll.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.sequences.getAll.invalidate();
+      void utils.sequences.getAll.invalidate();
     },
   });
   const utils = api.useUtils();
@@ -32,9 +32,9 @@ export function DeleteSequenceButton({ sequence }: { sequence: Sequence }) {
         const success = await deleteSequence.mutateAsync(sequence.id, {
           onSuccess(input) {
             if (input.active) {
-              utils.sequences.getActive.invalidate();
+              void utils.sequences.getActive.invalidate();
             }
-            utils.sequences.getFromId.invalidate(input.id);
+            void utils.sequences.getFromId.invalidate(input.id);
           },
         });
         if (success) {
