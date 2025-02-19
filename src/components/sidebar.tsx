@@ -32,7 +32,7 @@ export default function Sidebar() {
   return (
     <div className="flex w-60 shrink-0 flex-col items-stretch gap-2 p-4">
       {routes.map((route) =>
-        pathname === route.route ? (
+        pathname.startsWith(route.route) ? (
           <Button
             key={route.name + route.route}
             variant="ghost"
