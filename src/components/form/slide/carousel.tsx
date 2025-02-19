@@ -52,7 +52,12 @@ export function PreviewCarousel({
                   type="button"
                   variant="ghost"
                   onClick={() =>
-                    form.setValue("slides", [...form.getValues("slides"), {}])
+                    form.setValue("slides", [
+                      ...form.getValues("slides"),
+                      {
+                        bottom: { visible: false, title: "", description: "" },
+                      },
+                    ])
                   }
                 >
                   create a new slide

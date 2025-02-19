@@ -50,7 +50,12 @@ const FormSchema = z.object({
           description: z.string().optional(),
         })
         .optional(),
-      duration: z.number().optional(),
+      duration: z
+        .string()
+        .refine((value) => /^\d*$/.test(value), {
+          message: "must be an integer",
+        })
+        .optional(),
     }),
   ),
 });
@@ -71,7 +76,7 @@ export type FormType = UseFormReturn<
         title?: string;
         description?: string;
       };
-      duration?: number;
+      duration?: string;
     }[];
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

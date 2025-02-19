@@ -70,6 +70,7 @@ function SlideDurationSettings({
     <FormField
       control={form.control}
       name={`slides.${index}.duration`}
+      defaultValue=""
       render={({ field }) => {
         return (
           <FormItem>
@@ -87,14 +88,7 @@ function SlideDurationSettings({
               </FormDescription>
             </div>
             <FormControl>
-              <Input
-                type="number"
-                placeholder="duration (ms)"
-                {...field}
-                onChange={(e) => {
-                  field.onChange(parseInt(e.target.value));
-                }}
-              />
+              <Input placeholder="duration (ms)" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

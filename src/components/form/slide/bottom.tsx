@@ -95,6 +95,7 @@ function TitleField({ form, index }: { form: FormType; index: number }) {
     <FormField
       control={form.control}
       name={`slides.${index}.bottom.title`}
+      defaultValue=""
       render={({ field }) => {
         return (
           <FormItem>
@@ -115,6 +116,7 @@ function DescriptionField({ form, index }: { form: FormType; index: number }) {
     <FormField
       control={form.control}
       name={`slides.${index}.bottom.description`}
+      defaultValue=""
       render={({ field }) => {
         return (
           <FormItem>
