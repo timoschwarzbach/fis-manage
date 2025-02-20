@@ -15,6 +15,7 @@ export const env = createEnv({
     MINIO_SECRET_KEY: z.string(),
     MINIO_BUCKET_NAME: z.string(),
     DATABASE_URL: z.string().url(),
+    TAGESSCHAU_SERVICE_URL: z.string().url(),
   },
 
   /**
@@ -39,6 +40,7 @@ export const env = createEnv({
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME,
     DATABASE_URL: process.env.DATABASE_URL,
+    TAGESSCHAU_SERVICE_URL: process.env.TAGESSCHAU_SERVICE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
