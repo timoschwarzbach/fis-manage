@@ -14,7 +14,7 @@ export async function GET(_request: Request) {
 
   const sequences_insert = db.prepare('INSERT INTO sequences (id, active, category, locations, aspects, slides, lastUpdated) VALUES (@id, @active, @category, @locations, @aspects, @slides, @lastUpdated)');
   const sequences_insertMany = db.transaction((sequences: Sequence[]) => {
-    for (const sequence of sequences) sequences_insert.run({ ...sequence, id: sequence.id, active: sequence.active ? "true" : "false", category: sequence.category, locations: JSON.stringify(sequence.locations), aspects: JSON.stringify(sequence.aspects), slides: JSON.stringify(sequence.slides), lastUpdated: sequence.lastUpdated.toISOString() });
+    for (const sequence of sequences) sequences_insert.run({ ...sequence, id: sequence.id, active: sequence.active ? "true" : "false", category: sequence.category, locations: JSON.stringify(sequence.locations), aspects: JSON.stringify(sequence.aspects), slides: sequence.slides, lastUpdated: sequence.lastUpdated.toISOString() });
   });
   sequences_insertMany(sequences);
 
