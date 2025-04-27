@@ -37,5 +37,5 @@ jobs:
             MINIO_ACCESS_KEY=minio
             MINIO_SECRET_KEY=miniosecret
             MINIO_BUCKET_NAME=fis
-            DATABASE_URL="postgresql://postgres:password@localhost:5432/fis-manage"
-            TAGESSCHAU_SERVICE_URL="https://tagesschauscraper/tagesschau"
+            DATABASE_URL=postgresql://postgres:password@localhost:5432/fis-manage
+            TAGESSCHAU_SERVICE_URL=https://tagesschauscraper/tagesschau
