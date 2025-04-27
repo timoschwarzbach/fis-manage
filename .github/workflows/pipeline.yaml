@@ -30,7 +30,7 @@ jobs:
           tags: |
             ghcr.io/timoschwarzbach/fis-manage:latest
             ghcr.io/timoschwarzbach/fis-manage:${{ github.sha }}
-          secrets: |
+          secret-envs: |
             MINIO_ENDPOINT=http://example.com
             MINIO_SSL=true
             MINIO_PORT=443
