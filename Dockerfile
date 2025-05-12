@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM node:18-slim AS base
+FROM node:24-slim AS base
 
 # Install openssl for Prisma
 RUN apt-get update -y && apt-get install -y openssl

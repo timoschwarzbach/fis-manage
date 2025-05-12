@@ -24,6 +24,10 @@ const config = {
         protocol: "http",
         hostname: "minio",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
     ],
   },
   output: "standalone",

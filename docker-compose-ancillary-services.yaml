@@ -1,0 +1,42 @@
+version: "2"
+services:
+  minio:
+    image: quay.io/minio/minio
+    environment:
+      - MINIO_ROOT_USER=user
+      - MINIO_ROOT_PASSWORD=password
+      - MINIO_ACCESS_KEY=tpCDhE8E3M02BIA0bkxZ
+      - MINIO_SECRET_KEY=tjdT7ipT9XFb1Hz7sF9mh6SmJBZf2wVtNF8UC7BM
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ~/code/fis/manage-file-storage/data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - fis-network
+  postgres:
+    image: docker.io/postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=8xGXnrAuEwf971ja
+      - POSTGRES_DB=fis-manage
+    ports:
+      - "5432:5432"
+    networks:
+      - fis-network
+  scraper:
+    image: fistagesschauscraper
+    environment:
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_SSL=false
+      - MINIO_PORT=9000
+      - MINIO_ACCESS_KEY=tpCDhE8E3M02BIA0bkxZ
+      - MINIO_SECRET_KEY=tjdT7ipT9XFb1Hz7sF9mh6SmJBZf2wVtNF8UC7BM
+    ports:
+      - "6969:6969"
+    networks:
+      - fis-network
+networks:
+  fis-network:
+    driver: bridge
