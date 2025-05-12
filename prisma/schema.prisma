@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
 model File {
-  id String @id @default(cuid()) @map("_id")
+  id String @id @default(cuid())
 
   bucket String
   fileName String
@@ -21,25 +21,28 @@ model File {
 }
 
 model Sequence {
-  id String @id @default(cuid()) @map("_id")
+  id String @id @default(cuid())
   
   active Boolean
   locations String[]
   category String
   aspects String[]
-
   slides Slide[]
-
+  
   createdAt DateTime @default(now())
   lastUpdated DateTime @default(now())
 }
 
-type Slide {
-  duration Float
+model Slide {
+  id String @id @default(cuid())
 
+  duration Float
   backgroundMediaId String
   // content at the bottom
   highlight Boolean
   title String
   description String
+
+  sequence Sequence @relation(fields: [sequenceId], references: [id])
+  sequenceId String
 }
