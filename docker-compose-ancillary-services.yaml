@@ -15,14 +15,14 @@ services:
     command: server /data --console-address ":9001"
     networks:
       - fis-network
-  postgres:
-    image: docker.io/postgres
+  database:
+    image: mongo
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=8xGXnrAuEwf971ja
-      - POSTGRES_DB=fis-manage
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=8xGXnrAuEwf971ja
+      - MONGO_INITDB_DATABASE=fis-manage
     ports:
-      - "5432:5432"
+      - "27017:27017"
     networks:
       - fis-network
   scraper:

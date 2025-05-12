@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { toast } from "~/hooks/use-toast";
@@ -20,106 +20,67 @@ import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   active: z.boolean(),
-  aspects: z.array(z.string()),
-  location: z.object({
-    type: z.string(),
-    stations: z
-      .array(z.string())
-      .refine(
-        (value) => {
-          return value?.every((station) => station.length > 0);
-        },
-        { message: "no empty stations" },
-      )
-      .refine(
-        (value) => {
-          return value?.length === new Set(value).size;
-        },
-        { message: "no duplicate stations" },
-      )
-      .optional(),
-  }),
-  slides: z.array(
-    z.object({
-      background: z.string().optional(),
-      bottom: z
-        .object({
-          visible: z.boolean().optional(),
-          background: z.boolean().optional(),
-          title: z.string().optional(),
-          description: z.string().optional(),
-        })
-        .optional(),
-      duration: z
-        .string()
-        .refine((value) => /^\d*$/.test(value), {
-          message: "must be an integer",
-        })
-        .optional(),
-    }),
-  ),
-});
+  aspects: z.string().array(),
+  locations: z
+    .string()
+    .array()
+    .refine(
+      (value) => {
+        return value?.every((station) => station.length > 0);
+      },
+      { message: "no empty stations" },
+    )
+    .refine(
+      (value) => {
+        return value?.length === new Set(value).size;
+      },
+      { message: "no duplicate stations" },
+    ),
+  slides: z
+    .object({
+      duration: z.number(),
 
-export type FormType = UseFormReturn<
-  {
-    active: boolean;
-    aspects: string[];
-    location: {
-      type: string;
-      stations?: string[];
-    };
-    slides: {
-      background?: string;
-      bottom?: {
-        visible?: boolean;
-        background?: boolean;
-        title?: string;
-        description?: string;
-      };
-      duration?: string;
-    }[];
-  },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  any,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  undefined
->;
+      backgroundMediaId: z.string(),
+
+      highlight: z.boolean(),
+      title: z.string(),
+      description: z.string(),
+    })
+    .array(),
+});
 
 export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   const router = useRouter();
   const createOrUpdate = api.sequences.createOrUpdate.useMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      active: sequence?.active ?? false,
-      aspects: ["aspect-16-9"],
-      location: {
-        type: "unspecified",
-      },
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      slides: JSON.parse(sequence?.slides ?? "[]"),
-    },
+    defaultValues: sequence
+      ? {
+          active: sequence.active,
+          aspects: sequence.aspects,
+          locations: sequence.locations,
+          slides: sequence.slides,
+        }
+      : {
+          active: false,
+          aspects: ["aspect-16-9"],
+          locations: [],
+          slides: [],
+        },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const { active, location, slides, aspects } = data;
+      const { active, locations, slides, aspects } = data;
       await createOrUpdate.mutateAsync({
         id: sequence?.id,
         active,
-        locations:
-          location.type === "stations" && location.stations
-            ? location.stations
-            : [],
+        locations,
         category: "default",
         aspects,
-        slides: JSON.stringify(
-          slides.map((slide) => {
-            const duration = parseInt(slide.duration ?? "");
-            return { ...slide, duration: duration > 0 ? duration : undefined };
-          }),
-        ),
+        slides,
       });
+
       toast({
         title: "You submitted the following values:",
         description: (
@@ -144,9 +105,7 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
         <ActiveSettings form={form} />
         <AspectSettings form={form} />
         <LocationSettings form={form} />
-        {form.getValues("location.type") === "stations" && (
-          <LocationStationDetails form={form} />
-        )}
+        <LocationStationDetails form={form} />
         <SlideSection form={form} />
         <Button type="submit">Submit</Button>
       </form>

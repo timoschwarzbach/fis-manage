@@ -29,9 +29,15 @@ export const sequencesRouter = createTRPCRouter({
     id: z.string().optional(),
     active: z.boolean(),
     category: z.string(),
-    locations: z.array(z.string()),
-    aspects: z.array(z.string()),
-    slides: z.string(),
+    locations: z.string().array(),
+    aspects: z.string().array(),
+    slides: z.object({
+      duration: z.number(),
+      backgroundMediaId: z.string(),
+      highlight: z.boolean(),
+      title: z.string(),
+      description: z.string(),
+    }).array(),
   })).mutation(async ({ ctx, input }) => {
     const existing = await ctx.db.sequence.findFirst({ where: { id: input.id } })
     if (existing && input.id) {
@@ -47,12 +53,14 @@ export const sequencesRouter = createTRPCRouter({
   }),
   createEmpty: publicProcedure.mutation(async ({ ctx }) => {
     return await ctx.db.sequence.create({
+      include: {
+        slides: true,
+      },
       data: {
         active: false,
         category: "default",
         locations: [],
         aspects: [],
-        slides: "[]",
       }
     })
   }),
