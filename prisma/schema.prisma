@@ -27,22 +27,8 @@ model Sequence {
   locations String[]
   category String
   aspects String[]
-  slides Slide[]
+  slides Json[]
   
   createdAt DateTime @default(now())
   lastUpdated DateTime @default(now())
-}
-
-model Slide {
-  id String @id @default(cuid())
-
-  duration Float
-  backgroundMediaId String
-  // content at the bottom
-  highlight Boolean
-  title String
-  description String
-
-  sequence Sequence @relation(fields: [sequenceId], references: [id])
-  sequenceId String
 }

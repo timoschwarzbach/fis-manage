@@ -6,19 +6,16 @@ import { Card } from "~/components/ui/card";
 import { DeleteSequenceButton } from "./delete";
 
 type Slides = {
-  background?: string;
-  bottom?: {
-    visible?: boolean;
-    background?: boolean;
-    title?: string;
-    description?: string;
-  };
-  duration?: number;
+  backgroundMediaId: string;
+  highlight: boolean;
+  title: string;
+  description: string;
+  duration: number | null;
 }[];
 
 export function SequenceItem({ sequence }: { sequence: Sequence }) {
   if (!sequence.slides) return <>invalid sequence</>;
-  const slides = JSON.parse(sequence.slides) as Slides; // good enough for now
+  const slides = sequence.slides as Slides; // good enough for now
   return (
     <div className="group relative w-96">
       <Link
@@ -26,7 +23,7 @@ export function SequenceItem({ sequence }: { sequence: Sequence }) {
         className="flex flex-col gap-4 pb-8"
       >
         <Card className="aspect-video w-full overflow-hidden">
-          <Media id={slides[0]?.background ?? ""} />
+          <Media id={slides[0]?.backgroundMediaId ?? ""} />
         </Card>
         <div className="flex flex-row flex-wrap gap-2">
           {sequence.active && <Pill>Active</Pill>}

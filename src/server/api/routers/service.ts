@@ -19,6 +19,7 @@ export const servicesRouter = createTRPCRouter({
         console.error(error);
         throw new Error("Failed to fetch tagesschau API");
       });
+
       const tagesschauSequences: tagesschauSequence[] = await res.json() as tagesschauSequence[];
       const now = new Date();
       return tagesschauSequences.map((sequence) => {
@@ -30,14 +31,13 @@ export const servicesRouter = createTRPCRouter({
           category: "tagesschau",
           locations: [],
           aspects: [],
-          slides: JSON.stringify([{
-            background: sequence.id, bottom: {
-              visible: true,
-              background: true,
-              title: sequence.topline,
-              description: sequence.headline,
-            }
-          }]),
+          slides: [{
+            backgroundMediaId: sequence.id,
+            highlight: true,
+            title: sequence.topline,
+            description: sequence.headline,
+            duration: null,
+          }],
         }
       }) as Sequence[]
     } catch (e) {

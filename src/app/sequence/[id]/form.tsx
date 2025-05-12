@@ -63,7 +63,9 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
           active: sequence.active,
           aspects: sequence.aspects,
           locations: sequence.locations,
-          slides: sequence.slides,
+          slides: sequence.slides as unknown as z.infer<
+            typeof FormSchema
+          >["slides"],
         }
       : {
           active: false,
