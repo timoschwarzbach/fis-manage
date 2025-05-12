@@ -55,7 +55,11 @@ export function PreviewCarousel({
                     form.setValue("slides", [
                       ...form.getValues("slides"),
                       {
-                        bottom: { visible: false, title: "", description: "" },
+                        duration: 0,
+                        backgroundMediaId: "",
+                        highlight: false,
+                        title: "",
+                        description: "",
                       },
                     ])
                   }

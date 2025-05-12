@@ -36,7 +36,7 @@ export function SlideBackgroundSettings({
   return (
     <FormField
       control={form.control}
-      name={`slides.${index}.background`}
+      name={`slides.${index}.backgroundMediaId`}
       render={({ field }) => {
         return (
           <FormItem>

@@ -70,7 +70,7 @@ function SlideDurationSettings({
     <FormField
       control={form.control}
       name={`slides.${index}.duration`}
-      defaultValue=""
+      defaultValue={0}
       render={({ field }) => {
         return (
           <FormItem>

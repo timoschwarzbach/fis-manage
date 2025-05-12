@@ -1,17 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 import { toast } from "~/hooks/use-toast";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { AspectSettings } from "~/components/form/aspect";
-import {
-  LocationSettings,
-  LocationStationDetails,
-} from "~/components/form/location";
+import { LocationStationDetails } from "~/components/form/location";
 import { SlideSection } from "~/components/form/slide/section";
 import { ActiveSettings } from "~/components/form/active";
 import { api } from "~/trpc/react";
@@ -48,6 +45,13 @@ const FormSchema = z.object({
     })
     .array(),
 });
+
+export type FormType = UseFormReturn<
+  z.infer<typeof FormSchema>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  any,
+  z.infer<typeof FormSchema>
+>;
 
 export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   const router = useRouter();
@@ -104,7 +108,6 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <ActiveSettings form={form} />
         <AspectSettings form={form} />
-        <LocationSettings form={form} />
         <LocationStationDetails form={form} />
         <SlideSection form={form} />
         <Button type="submit">Submit</Button>
