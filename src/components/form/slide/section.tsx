@@ -29,25 +29,6 @@ export function SlideSection({ form }: { form: FormType }) {
       <div className="w-full px-16">
         <PreviewCarousel form={form} setApi={setApi} />
       </div>
-      <FormField
-        control={form.control}
-        name="slides"
-        render={({ field }) => (
-          <>
-            {field.value.map((_, index) => (
-              <EditSlideContent
-                key={index} // random uuid instead?
-                form={form}
-                index={index}
-                current={current}
-              />
-            ))}
-          </>
-        )}
-      />
-      {form.getValues("slides").length <= current && (
-        <div className="h-96">todo: proper spacer to keep hight</div>
-      )}
     </div>
   );
 }

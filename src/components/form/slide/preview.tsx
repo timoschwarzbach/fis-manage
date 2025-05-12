@@ -1,21 +1,24 @@
-import { type Slide } from "@prisma/client";
 import { type FormType } from "~/app/sequence/[id]/form";
 import { Media } from "~/components/media";
 import { Card } from "~/components/ui/card";
+import { type Slide } from "~/lib/types";
+import { EditSlideOverlay } from "./form";
 
 export function Slide({ form, index }: { form: FormType; index: number }) {
   const slide = form.watch(`slides.${index}`);
-  return <PreviewRender slide={slide} />;
+  return (
+    <div className="relative">
+      <PreviewRender slide={slide} />
+      <EditSlideOverlay form={form} index={index} />
+    </div>
+  );
 }
 
-function PreviewRender({ slide }: { slide: Slide }) {
+export function PreviewRender({ slide }: { slide: Slide }) {
   return (
     <Card className="relative aspect-video w-full overflow-hidden bg-neutral-300 text-white">
       <Media id={slide.backgroundMediaId} />
-      <div className="absolute flex h-full w-full flex-col">
-        {/* <div className="flex h-full flex-[3] bg-transparent p-8">
-          {data.badge && <img className="h-14" src={data.badge} />}
-        </div> */}
+      <div className="absolute top-0 flex h-full w-full flex-col">
         {true && (
           <>
             <div

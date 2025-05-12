@@ -108,10 +108,10 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <SlideSection form={form} />
         <ActiveSettings form={form} />
         <AspectSettings form={form} />
         <LocationStationDetails form={form} />
-        <SlideSection form={form} />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

@@ -4,18 +4,11 @@ import { Pill } from "~/components/ui/pill";
 import { Media } from "~/components/media";
 import { Card } from "~/components/ui/card";
 import { DeleteSequenceButton } from "./delete";
-
-type Slides = {
-  backgroundMediaId: string;
-  highlight: boolean;
-  title: string;
-  description: string;
-  duration: number | null;
-}[];
+import { type Slide } from "~/lib/types";
 
 export function SequenceItem({ sequence }: { sequence: Sequence }) {
   if (!sequence.slides) return <>invalid sequence</>;
-  const slides = sequence.slides as Slides; // good enough for now
+  const slides = sequence.slides as Slide[]; // good enough for now
   return (
     <div className="group relative w-96">
       <Link
