@@ -2,7 +2,6 @@ import { type FormType } from "~/app/sequence/[id]/form";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Carousel,
-  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -12,19 +11,9 @@ import { Slide } from "~/components/form/slide/preview";
 import { Button } from "~/components/ui/button";
 import { FormField } from "~/components/ui/form";
 
-export function PreviewCarousel({
-  form,
-  setApi,
-}: {
-  form: FormType;
-  setApi: (api: CarouselApi) => void;
-}) {
+export function PreviewCarousel({ form }: { form: FormType }) {
   return (
-    <Carousel
-      className="w-full max-w-full"
-      setApi={setApi}
-      opts={{ containScroll: false }}
-    >
+    <Carousel className="w-full max-w-full" opts={{ containScroll: false }}>
       <CarouselContent>
         <FormField
           control={form.control}
