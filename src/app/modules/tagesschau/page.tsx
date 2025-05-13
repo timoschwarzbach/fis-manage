@@ -6,17 +6,8 @@ import { ExternalMedia } from "~/components/media";
 import { Card } from "~/components/ui/card";
 import { Pill } from "~/components/ui/pill";
 import { Button } from "~/components/ui/button";
-
-type tagesschauItemType = {
-  id: string;
-  createdAt: Date;
-  active: boolean;
-  category: string;
-  locations: string[];
-  aspects: string[];
-  slides: string;
-  lastUpdated: Date;
-};
+import { type Sequence } from "@prisma/client";
+import { type Slide } from "~/lib/types";
 
 export default function TagesschauPage() {
   const tagesschauQuery = api.services.getTagesschau.useQuery();
@@ -55,19 +46,8 @@ export default function TagesschauPage() {
   );
 }
 
-const TagesschauItem = ({ item }: { item: tagesschauItemType }) => {
-  const news = (
-    JSON.parse(item.slides) as {
-      background?: string;
-      bottom: {
-        visible?: boolean;
-        background?: boolean;
-        title: string;
-        description: string;
-      };
-      duration?: string;
-    }[]
-  )[0];
+const TagesschauItem = ({ item }: { item: Sequence }) => {
+  const news = (item.slides as Slide[])[0];
 
   if (!news) {
     return <>empty</>;
@@ -83,8 +63,8 @@ const TagesschauItem = ({ item }: { item: tagesschauItemType }) => {
         />
       </Card>
       <div className="flex flex-row flex-wrap gap-2">
-        <Pill>{news.bottom.title}</Pill>
-        {news.bottom.description}
+        <Pill>{news.title}</Pill>
+        {news.description}
       </div>
     </div>
   );

@@ -24,6 +24,10 @@ const routes = [
     name: "Configuration",
     route: "/configuration",
   },
+  {
+    name: "Modules/Tagesschau",
+    route: "/modules/tagesschau",
+  },
 ];
 
 export default function Sidebar() {
