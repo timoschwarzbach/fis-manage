@@ -1,68 +1,59 @@
-# syntax=docker.io/docker/dockerfile:1
+##### DEPENDENCIES
 
-FROM node:24-slim AS base
-
-# Install openssl for Prisma
-RUN apt-get update -y && apt-get install -y openssl
-
-# Install dependencies only when needed
-FROM base AS deps
+FROM node:22-alpine AS deps
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
-COPY prisma ./prisma
+# Install Prisma Client - remove if not using Prisma
+
+COPY prisma ./
+
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml\* ./
+
 RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+    if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+    elif [ -f package-lock.json ]; then npm ci; \
+    elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm i; \
+    else echo "Lockfile not found." && exit 1; \
+    fi
 
+##### BUILDER
 
-# Rebuild the source code only when needed
-FROM base AS builder
+FROM node:22-alpine AS builder
+ARG DATABASE_URL
+ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN \
-  if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn build; \
-  elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && SKIP_ENV_VALIDATION=1 pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+    if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn build; \
+    elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run build; \
+    elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && SKIP_ENV_VALIDATION=1 pnpm run build; \
+    else echo "Lockfile not found." && exit 1; \
+    fi
 
-# Production image, copy all the files and run next
-FROM base AS runner
+##### RUNNER
+
+FROM gcr.io/distroless/nodejs20-debian12 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-# Uncomment the following line in case you want to disable telemetry during runtime.
+
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
+COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
-USER nextjs
+EXPOSE 3000
+ENV PORT=3000
 
-EXPOSE 3001
-
-ENV PORT=3001
-
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
-ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["server.js"]
