@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
 
 export function SlideBottomSettings({
@@ -24,7 +23,6 @@ export function SlideBottomSettings({
       render={() => {
         return (
           <div className="space-y-4">
-            <Separator className="my-4" />
             <TitleField form={form} index={index} />
             <DescriptionField form={form} index={index} />
             <BackgroundToggle form={form} index={index} />
@@ -51,9 +49,7 @@ function BackgroundToggle({ form, index }: { form: FormType; index: number }) {
                   aria-readonly
                 />
               </FormControl>
-              <FormLabel>
-                Transparent Background (to improve ledgebility)
-              </FormLabel>
+              <FormLabel>Text Background</FormLabel>
             </div>
           </FormItem>
         );

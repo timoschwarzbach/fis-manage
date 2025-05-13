@@ -5,13 +5,10 @@ import { Media } from "~/components/media";
 import { Button } from "~/components/ui/button";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Label } from "~/components/ui/label";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   Sheet,
@@ -40,12 +37,6 @@ export function SlideBackgroundSettings({
       render={({ field }) => {
         return (
           <FormItem>
-            <div className="mb-4">
-              <FormLabel className="text-base">Background</FormLabel>
-              <FormDescription>
-                Choose a static image or a video as a background
-              </FormDescription>
-            </div>
             <FormControl>
               <BackgroundSelectSheet
                 value={field.value}
@@ -78,9 +69,8 @@ function BackgroundSelectSheet({
     <Sheet>
       <SheetTrigger asChild>
         <div className="flex flex-row items-center gap-2">
-          <Label className="text-base">{value ?? "Select a background"}</Label>
           <Button variant="outline" type="button">
-            Open
+            {value ? "Change background" : "Select a background"}
           </Button>
         </div>
       </SheetTrigger>

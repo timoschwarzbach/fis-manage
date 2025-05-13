@@ -7,8 +7,8 @@ import { z } from "zod";
 import { toast } from "~/hooks/use-toast";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
-import { AspectSettings } from "~/components/form/aspect";
-import { LocationStationDetails } from "~/components/form/location";
+// import { AspectSettings } from "~/components/form/aspect";
+// import { LocationStationDetails } from "~/components/form/location";
 import { SlideSection } from "~/components/form/slide/section";
 import { ActiveSettings } from "~/components/form/active";
 import { api } from "~/trpc/react";
@@ -110,8 +110,8 @@ export function SequenceForm({ sequence }: { sequence: Sequence | null }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <SlideSection form={form} />
         <ActiveSettings form={form} />
-        <AspectSettings form={form} />
-        <LocationStationDetails form={form} />
+        {/* <AspectSettings form={form} /> */}
+        {/* <LocationStationDetails form={form} /> */}
         <Button type="submit">Submit</Button>
       </form>
     </Form>

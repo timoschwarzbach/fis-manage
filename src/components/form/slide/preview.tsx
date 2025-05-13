@@ -3,13 +3,17 @@ import { Media } from "~/components/media";
 import { Card } from "~/components/ui/card";
 import { type Slide } from "~/lib/types";
 import { EditSlideOverlay } from "./form";
+import { DeleteSlideAlert } from "./delete";
 
 export function Slide({ form, index }: { form: FormType; index: number }) {
   const slide = form.watch(`slides.${index}`);
   return (
     <div className="relative">
       <PreviewRender slide={slide} />
-      <EditSlideOverlay form={form} index={index} />
+      <div className="absolute right-4 top-4 flex flex-row-reverse gap-2">
+        <DeleteSlideAlert form={form} index={index} />
+        <EditSlideOverlay form={form} index={index} />
+      </div>
     </div>
   );
 }
