@@ -19,22 +19,17 @@ export function PreviewRender({ slide }: { slide: Slide }) {
     <Card className="relative aspect-video w-full overflow-hidden bg-neutral-300 text-white">
       <Media id={slide.backgroundMediaId} />
       <div className="absolute top-0 flex h-full w-full flex-col">
-        {true && (
-          <>
-            <div
-              data-background={slide.highlight}
-              className="flex-1 bg-gradient-to-b from-transparent data-[background=true]:to-black/60"
-            ></div>
-
-            <div
-              data-background={slide.highlight}
-              className="flex flex-col p-4 data-[background=true]:bg-black/60"
-            >
-              <span className="text-base">{slide.title}</span>
-              <span className="text-lg font-bold">{slide.description}</span>
-            </div>
-          </>
-        )}
+        <div
+          data-background={slide.highlight}
+          className="flex-1 bg-gradient-to-b from-transparent data-[background=true]:to-black/60"
+        />
+        <div
+          data-background={slide.highlight}
+          className="flex flex-col p-4 data-[background=true]:bg-black/60"
+        >
+          <span className="text-base">{slide.title}</span>
+          <span className="text-lg font-bold">{slide.description}</span>
+        </div>
       </div>
     </Card>
   );
