@@ -1,14 +1,12 @@
 import { type FormType } from "~/app/sequence/[id]/form";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
 
 export function SlideBottomSettings({
@@ -21,42 +19,14 @@ export function SlideBottomSettings({
   return (
     <FormField
       control={form.control}
-      name={`slides.${index}.bottom`}
+      name={`slides.${index}`}
       render={() => {
         return (
-          <FormField
-            control={form.control}
-            name={`slides.${index}.bottom.visible`}
-            render={({ field }) => {
-              return (
-                <FormItem className="rounded-lg border p-3 shadow-sm">
-                  <FormItem className="flex flex-row items-center justify-between">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">
-                        Bottom content
-                      </FormLabel>
-                      <FormDescription>
-                        You can overlay a title + description on the bottom of
-                        the slide
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                  <div hidden={!field.value} className="space-y-4">
-                    <Separator className="my-4" />
-                    <TitleField form={form} index={index} />
-                    <DescriptionField form={form} index={index} />
-                    <BackgroundToggle form={form} index={index} />
-                  </div>
-                </FormItem>
-              );
-            }}
-          />
+          <div className="space-y-4">
+            <TitleField form={form} index={index} />
+            <DescriptionField form={form} index={index} />
+            <BackgroundToggle form={form} index={index} />
+          </div>
         );
       }}
     />
@@ -67,7 +37,7 @@ function BackgroundToggle({ form, index }: { form: FormType; index: number }) {
   return (
     <FormField
       control={form.control}
-      name={`slides.${index}.bottom.background`}
+      name={`slides.${index}.highlight`}
       render={({ field }) => {
         return (
           <FormItem>
@@ -79,9 +49,7 @@ function BackgroundToggle({ form, index }: { form: FormType; index: number }) {
                   aria-readonly
                 />
               </FormControl>
-              <FormLabel>
-                Transparent Background (to improve ledgebility)
-              </FormLabel>
+              <FormLabel>Text Background</FormLabel>
             </div>
           </FormItem>
         );
@@ -94,7 +62,7 @@ function TitleField({ form, index }: { form: FormType; index: number }) {
   return (
     <FormField
       control={form.control}
-      name={`slides.${index}.bottom.title`}
+      name={`slides.${index}.title`}
       defaultValue=""
       render={({ field }) => {
         return (
@@ -115,7 +83,7 @@ function DescriptionField({ form, index }: { form: FormType; index: number }) {
   return (
     <FormField
       control={form.control}
-      name={`slides.${index}.bottom.description`}
+      name={`slides.${index}.description`}
       defaultValue=""
       render={({ field }) => {
         return (

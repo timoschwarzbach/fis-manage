@@ -2,7 +2,6 @@ import { type FormType } from "~/app/sequence/[id]/form";
 import { Card, CardContent } from "~/components/ui/card";
 import {
   Carousel,
-  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -11,20 +10,11 @@ import {
 import { Slide } from "~/components/form/slide/preview";
 import { Button } from "~/components/ui/button";
 import { FormField } from "~/components/ui/form";
+import { PlusCircle } from "lucide-react";
 
-export function PreviewCarousel({
-  form,
-  setApi,
-}: {
-  form: FormType;
-  setApi: (api: CarouselApi) => void;
-}) {
+export function PreviewCarousel({ form }: { form: FormType }) {
   return (
-    <Carousel
-      className="w-full max-w-full"
-      setApi={setApi}
-      opts={{ containScroll: false }}
-    >
+    <Carousel className="w-full max-w-full" opts={{ containScroll: false }}>
       <CarouselContent>
         <FormField
           control={form.control}
@@ -55,11 +45,16 @@ export function PreviewCarousel({
                     form.setValue("slides", [
                       ...form.getValues("slides"),
                       {
-                        bottom: { visible: false, title: "", description: "" },
+                        duration: 0,
+                        backgroundMediaId: "",
+                        highlight: false,
+                        title: "",
+                        description: "",
                       },
                     ])
                   }
                 >
+                  <PlusCircle />
                   create a new slide
                 </Button>
               </CardContent>
