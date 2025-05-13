@@ -22,7 +22,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, PencilIcon } from "lucide-react";
 import { CardTitle } from "~/components/ui/card";
 
 export const EditSlideOverlay = ({
@@ -35,7 +35,9 @@ export const EditSlideOverlay = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary">Edit</Button>
+        <Button variant="secondary">
+          <PencilIcon aria-valuetext="Edit" />
+        </Button>
       </DialogTrigger>
       <EditSlideContent key={index} form={form} index={index} />
     </Dialog>

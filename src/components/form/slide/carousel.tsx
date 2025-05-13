@@ -10,6 +10,7 @@ import {
 import { Slide } from "~/components/form/slide/preview";
 import { Button } from "~/components/ui/button";
 import { FormField } from "~/components/ui/form";
+import { PlusCircle } from "lucide-react";
 
 export function PreviewCarousel({ form }: { form: FormType }) {
   return (
@@ -53,6 +54,7 @@ export function PreviewCarousel({ form }: { form: FormType }) {
                     ])
                   }
                 >
+                  <PlusCircle />
                   create a new slide
                 </Button>
               </CardContent>

@@ -9,6 +9,7 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { useState } from "react";
+import { Trash2Icon } from "lucide-react";
 
 export const DeleteSlideAlert = ({
   form,
@@ -22,7 +23,7 @@ export const DeleteSlideAlert = ({
     <AlertDialog open={open}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" onClick={() => setOpen(true)}>
-          Delete
+          <Trash2Icon aria-valuetext="Delete" />
         </Button>
       </AlertDialogTrigger>
       <DeleteSlide key={index} form={form} index={index} setOpen={setOpen} />
