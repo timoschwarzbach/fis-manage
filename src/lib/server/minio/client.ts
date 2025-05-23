@@ -1,12 +1,15 @@
+import { readFileSync } from "fs";
 import * as Minio from "minio";
 
 const readSecretFile = async (filePath: string) => {
-  const file = await fetch(filePath);
-  if (!file.ok) {
-    console.error(`Failed to read secret file: ${filePath}`);
+  try {
+    const file = readFileSync(filePath);
+    const secret = file.toString()
+    return secret;
+  } catch (error) {
+    console.error(`Error reading secret file: ${filePath}`, error);
     return undefined;
   }
-  return file.text();
 }
 
 const MINIO_ENDPOINT = process.env.MINIO_ENDPOINT;
