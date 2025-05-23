@@ -1,5 +1,9 @@
 import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { type ZodTypeAny, z } from "zod";
+
+const eitherOr = (key: string, schema: ZodTypeAny) => {
+  return process.env[key] ? schema.optional() : schema;
+};
 
 export const env = createEnv({
   /**
@@ -11,8 +15,10 @@ export const env = createEnv({
     MINIO_ENDPOINT: z.string(),
     MINIO_SSL: z.enum(["true", "false"]),
     MINIO_PORT: z.string(),
-    MINIO_ACCESS_KEY: z.string(),
-    MINIO_SECRET_KEY: z.string(),
+    MINIO_ACCESS_KEY: eitherOr("MINIO_ACCESS_KEY_FILE", z.string()),
+    MINIO_ACCESS_KEY_FILE: eitherOr("MINIO_ACCESS_KEY", z.string()),
+    MINIO_SECRET_KEY: eitherOr("MINIO_SECRET_KEY_FILE", z.string()),
+    MINIO_SECRET_KEY_FILE: eitherOr("MINIO_SECRET_KEY", z.string()),
     MINIO_BUCKET_NAME: z.string(),
     DATABASE_URL: z.string().url(),
     TAGESSCHAU_SERVICE_URL: z.string().url(),
@@ -37,7 +43,9 @@ export const env = createEnv({
     MINIO_SSL: process.env.MINIO_SSL,
     MINIO_PORT: process.env.MINIO_PORT,
     MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
+    MINIO_ACCESS_KEY_FILE: process.env.MINIO_ACCESS_KEY_FILE,
     MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
+    MINIO_SECRET_KEY_FILE: process.env.MINIO_SECRET_KEY_FILE,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME,
     DATABASE_URL: process.env.DATABASE_URL,
     TAGESSCHAU_SERVICE_URL: process.env.TAGESSCHAU_SERVICE_URL,
