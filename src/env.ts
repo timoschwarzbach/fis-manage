@@ -1,6 +1,8 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { type ZodTypeAny, z } from "zod";
 
+import { readFileSync } from "fs";
+
 const eitherOr = (key: string, schema: ZodTypeAny) => {
   return process.env[key] ? schema.optional() : schema;
 };
@@ -20,7 +22,8 @@ export const env = createEnv({
     MINIO_SECRET_KEY: eitherOr("MINIO_SECRET_KEY_FILE", z.string()),
     MINIO_SECRET_KEY_FILE: eitherOr("MINIO_SECRET_KEY", z.string()),
     MINIO_BUCKET_NAME: z.string(),
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: eitherOr("DATABASE_URL_FILE", z.string().url()),
+    DATABASE_URL_FILE: eitherOr("DATABASE_URL", z.string()),
     TAGESSCHAU_SERVICE_URL: z.string().url(),
   },
 
@@ -48,6 +51,7 @@ export const env = createEnv({
     MINIO_SECRET_KEY_FILE: process.env.MINIO_SECRET_KEY_FILE,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME,
     DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_URL_FILE: process.env.DATABASE_URL_FILE,
     TAGESSCHAU_SERVICE_URL: process.env.TAGESSCHAU_SERVICE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
@@ -62,3 +66,19 @@ export const env = createEnv({
    */
   emptyStringAsUndefined: true,
 });
+
+
+const readSecretFile = (filePath: string) => {
+  try {
+    const file = readFileSync(filePath);
+    const secret = file.toString()
+    return secret;
+  } catch (error) {
+    console.error(`Error reading secret file: ${filePath}`, error);
+    return undefined;
+  }
+}
+
+export const envFileOrEnv = (envFile: string | undefined, env: string | undefined) => {
+  return envFile ? readSecretFile(envFile) : env;
+}
