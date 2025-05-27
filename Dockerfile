@@ -4,6 +4,10 @@ FROM node:22-alpine AS base
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat openssl
+
+# debugging
+RUN apk add --no-cache bash
+
 WORKDIR /app
 
 # Install Prisma Client - remove if not using Prisma
