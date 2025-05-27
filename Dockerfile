@@ -25,6 +25,8 @@ RUN \
 
 FROM base AS builder
 ARG MINIO_ENDPOINT="minio.url"
+ARG MINIO_SSL="false"
+ARG MINIO_PORT="9000"
 ARG DATABASE_URL="postgresql://postgres:password@localhost:5432/fis-manage"
 ARG TAGESSCHAU_SERVICE_URL="https://integrationsendpoint/tagesschau"
 WORKDIR /app
