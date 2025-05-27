@@ -12,6 +12,12 @@ const config = {
       {
         protocol: env.MINIO_SSL === "true" ? "https" : "http",
         hostname: env.MINIO_ENDPOINT,
+        port: env.MINIO_PORT,
+      },
+      {
+        protocol: "http",
+        hostname: "server.fis.timoschwarzbach.de",
+        port: "9000",
       },
     ],
   },
