@@ -9,12 +9,15 @@ export async function GET(_request: Request) {
   const files = await api.files.getAll();
 
   const db = new Database();
-  db.exec('CREATE TABLE sequences (id STRING PRIMARY KEY, active BOOLEAN, category STRING, locations TEXT, aspects TEXT, slides TEXT, lastUpdated TEXT)');
+  db.exec('CREATE TABLE sequences (id STRING PRIMARY KEY, active BOOLEAN, category STRING, locations TEXT, aspects TEXT, slides TEXT, createdAt TEXT, lastUpdated TEXT)');
   db.exec('CREATE TABLE files (id STRING PRIMARY KEY, bucket STRING, fileName STRING, fileType STRING, originalName STRING)');
 
-  const sequences_insert = db.prepare('INSERT INTO sequences (id, active, category, locations, aspects, slides, lastUpdated) VALUES (@id, @active, @category, @locations, @aspects, @slides, @lastUpdated)');
+  const sequences_insert = db.prepare('INSERT INTO sequences (id, active, category, locations, aspects, slides, createdAt, lastUpdated) VALUES (@id, @active, @category, @locations, @aspects, @slides, @createdAt, @lastUpdated)');
   const sequences_insertMany = db.transaction((sequences: Sequence[]) => {
-    for (const sequence of sequences) sequences_insert.run({ ...sequence, id: sequence.id, active: sequence.active ? "true" : "false", category: sequence.category, locations: JSON.stringify(sequence.locations), aspects: JSON.stringify(sequence.aspects), slides: sequence.slides, lastUpdated: sequence.lastUpdated.toISOString() });
+    for (const sequence of sequences) {
+      const item = { ...sequence, id: sequence.id, active: sequence.active ? "true" : "false", category: sequence.category, locations: JSON.stringify(sequence.locations), aspects: JSON.stringify(sequence.aspects), slides: JSON.stringify(sequence.slides), createdAt: sequence.createdAt.toISOString(), lastUpdated: sequence.lastUpdated.toISOString() };
+      sequences_insert.run(item);
+    }
   });
   sequences_insertMany(sequences);
 
