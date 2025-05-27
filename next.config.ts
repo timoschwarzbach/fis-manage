@@ -14,6 +14,10 @@ const config = {
         port: "9000",
         pathname: "**"
         // search needs to be omitted because wildcard does not work
+      },
+      {
+        protocol: "http",
+        hostname: "localhost"
       }
     ],
   },
