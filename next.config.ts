@@ -3,30 +3,15 @@
  * for Docker builds.
  */
 import "./src/env.ts";
+import { env } from "./src/env.ts";
 
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "th.bing.com",
-      },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-      },
-      {
-        protocol: "http",
-        hostname: "host.docker.internal",
-      },
-      {
-        protocol: "http",
-        hostname: "minio",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
+        protocol: env.MINIO_SSL === "true" ? "https" : "http",
+        hostname: env.MINIO_ENDPOINT,
       },
     ],
   },

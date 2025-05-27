@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    /* to import .env from next config */
+    "allowImportingTsExtensions": true,
+
     /* Base Options: */
     "esModuleInterop": true,
     "skipLibCheck": true,
