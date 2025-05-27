@@ -3,18 +3,18 @@
  * for Docker builds.
  */
 import "./src/env.ts";
+import { env } from "./src/env.ts";
 
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "server.fis.timoschwarzbach.de",
-        port: "9000",
+        protocol: env.MINIO_SSL === "true" ? "https" : "http",
+        hostname: env.MINIO_ENDPOINT,
+        port: env.MINIO_PORT,
         pathname: "**"
         // search needs to be omitted because wildcard does not work
-
       }
     ],
   },
