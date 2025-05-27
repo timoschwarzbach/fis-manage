@@ -2,7 +2,6 @@
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-import path from "path";
 import "./src/env.ts";
 import { env } from "./src/env.ts";
 
@@ -16,7 +15,7 @@ const config = {
         hostname: "server.fis.timoschwarzbach.de",
         port: "9000",
         pathname: "**",
-        query: "**"
+        search: "**"
 
       }
     ],
