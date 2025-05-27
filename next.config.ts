@@ -9,16 +9,8 @@ import { env } from "./src/env.ts";
 const config = {
   images: {
     remotePatterns: [
-      {
-        protocol: env.MINIO_SSL === "true" ? "https" : "http",
-        hostname: env.MINIO_ENDPOINT,
-        port: env.MINIO_PORT,
-      },
-      {
-        protocol: "http",
-        hostname: "server.fis.timoschwarzbach.de",
-        port: "9000",
-      },
+      new URL(`http${env.MINIO_SSL === "true" ? "s" : ""}://${env.MINIO_ENDPOINT}:${env.MINIO_PORT}/**`),
+      new URL("http://server.fis.timoschwarzbach.de:9000/**")
     ],
   },
   output: "standalone",
