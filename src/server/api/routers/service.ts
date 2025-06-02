@@ -1,12 +1,16 @@
 import { type Sequence } from "@prisma/client";
 import { env } from "~/env";
+import { type Slide } from "~/lib/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type tagesschauSequence = {
   id: string;
-  thumbnail: string;
-  topline: string;
-  headline: string;
+  active: boolean;
+  category: string;
+  locations: string[];
+  aspects: string[];
+  slides: Slide[];
+  createdAt: Date;
 }
 
 export const servicesRouter = createTRPCRouter({
@@ -24,20 +28,8 @@ export const servicesRouter = createTRPCRouter({
       const now = new Date();
       return tagesschauSequences.map((sequence) => {
         return {
-          id: sequence.id,
-          createdAt: now,
-          lastUpdated: now,
-          active: true,
-          category: "tagesschau",
-          locations: [],
-          aspects: [],
-          slides: [{
-            backgroundMediaId: sequence.id,
-            highlight: true,
-            title: sequence.topline,
-            description: sequence.headline,
-            duration: null,
-          }],
+          ...sequence,
+          lastUpdated: now
         }
       }) as Sequence[]
     } catch (e) {
