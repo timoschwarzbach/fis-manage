@@ -47,7 +47,7 @@ export default function TagesschauPage() {
 }
 
 const TagesschauItem = ({ item }: { item: Sequence }) => {
-  const news = (item.slides as Slide[])[0];
+  const news = (item.slides as Slide[])[1];
 
   if (!news) {
     return <>empty</>;

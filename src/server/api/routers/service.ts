@@ -10,7 +10,7 @@ type tagesschauSequence = {
   locations: string[];
   aspects: string[];
   slides: Slide[];
-  createdAt: Date;
+  createdAt: string;
 }
 
 export const servicesRouter = createTRPCRouter({
@@ -29,6 +29,7 @@ export const servicesRouter = createTRPCRouter({
       return tagesschauSequences.map((sequence) => {
         return {
           ...sequence,
+          createdAt: new Date(sequence.createdAt),
           lastUpdated: now
         }
       }) as Sequence[]
