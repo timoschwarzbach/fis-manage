@@ -42,6 +42,8 @@ const FormSchema = z.object({
       highlight: z.boolean(),
       title: z.string(),
       description: z.string(),
+
+      content: z.string().optional(),
     })
     .array(),
 });

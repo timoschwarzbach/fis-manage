@@ -3,7 +3,7 @@ import { env } from "~/env";
 import { type Slide } from "~/lib/types";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-type tagesschauSequence = {
+type apiSequence = {
   id: string;
   active: boolean;
   category: string;
@@ -11,30 +11,51 @@ type tagesschauSequence = {
   aspects: string[];
   slides: Slide[];
   createdAt: string;
+  lastUpdated: string;
 }
 
 export const servicesRouter = createTRPCRouter({
   getTagesschau: publicProcedure.query(async () => {
     try {
-      if (!env.TAGESSCHAU_SERVICE_URL) {
-        throw new Error("TAGESSCHAU_SERVICE_URL not set");
-      }
-      const res = await fetch(env.TAGESSCHAU_SERVICE_URL).catch((error) => {
+      const url = new URL(env.INTEGRATIONS_SERVICE_URL);
+      url.pathname = "/tagesschau";
+      const res = await fetch(url).catch((error) => {
         console.error(error);
         throw new Error("Failed to fetch tagesschau API");
       });
 
-      const tagesschauSequences: tagesschauSequence[] = await res.json() as tagesschauSequence[];
-      const now = new Date();
-      return tagesschauSequences.map((sequence) => {
+      const sequences = await res.json() as apiSequence[];
+      return sequences.map((sequence) => {
         return {
           ...sequence,
           createdAt: new Date(sequence.createdAt),
-          lastUpdated: now
+          lastUpdated: new Date(sequence.lastUpdated),
         }
       }) as Sequence[]
     } catch (e) {
-      console.error(e);
+      console.error("reading sequences from tagesschau module failed", e);
+      return [] as Sequence[];
+    }
+  }),
+  getWeather: publicProcedure.query(async () => {
+    try {
+      const url = new URL(env.INTEGRATIONS_SERVICE_URL);
+      url.pathname = "/weather";
+      const res = await fetch(url).catch((error) => {
+        console.error(error);
+        throw new Error("Failed to fetch weather API");
+      });
+
+      const sequences = await res.json() as apiSequence[];
+      return sequences.map((sequence) => {
+        return {
+          ...sequence,
+          createdAt: new Date(sequence.createdAt),
+          lastUpdated: new Date(sequence.lastUpdated),
+        }
+      }) as Sequence[]
+    } catch (e) {
+      console.error("reading sequences from weather module failed", e);
       return [] as Sequence[];
     }
   }),

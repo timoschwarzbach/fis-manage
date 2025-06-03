@@ -6,6 +6,7 @@ import { type File, type Sequence } from "@prisma/client";
 export async function GET(_request: Request) {
   const sequences = await api.sequences.getActive();
   const tagesschau = await api.services.getTagesschau();
+  const weather = await api.services.getWeather();
   const files = await api.files.getAll();
 
   const db = new Database();
@@ -20,8 +21,8 @@ export async function GET(_request: Request) {
     }
   });
   sequences_insertMany(sequences);
-
   sequences_insertMany(tagesschau);
+  sequences_insertMany(weather);
 
   const files_insert = db.prepare('INSERT INTO files (id, bucket, fileName, fileType, originalName) VALUES (@id, @bucket, @fileName, @fileType, @originalName)');
   const files_insertMany = db.transaction((files: File[]) => {

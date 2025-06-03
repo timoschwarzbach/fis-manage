@@ -4,5 +4,5 @@ export type Slide = {
   title?: string;
   description?: string;
   duration: number | null;
-  content: string;
+  content?: string;
 }

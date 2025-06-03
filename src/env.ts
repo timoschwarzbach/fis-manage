@@ -24,7 +24,7 @@ export const env = createEnv({
     MINIO_BUCKET_NAME: z.string(),
     DATABASE_URL: eitherOr("DATABASE_URL_FILE", z.string().url()),
     DATABASE_URL_FILE: eitherOr("DATABASE_URL", z.string()),
-    TAGESSCHAU_SERVICE_URL: z.string().url(),
+    INTEGRATIONS_SERVICE_URL: z.string().url(),
   },
 
   /**
@@ -52,7 +52,7 @@ export const env = createEnv({
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME,
     DATABASE_URL: process.env.DATABASE_URL,
     DATABASE_URL_FILE: process.env.DATABASE_URL_FILE,
-    TAGESSCHAU_SERVICE_URL: process.env.TAGESSCHAU_SERVICE_URL,
+    INTEGRATIONS_SERVICE_URL: process.env.INTEGRATIONS_SERVICE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
