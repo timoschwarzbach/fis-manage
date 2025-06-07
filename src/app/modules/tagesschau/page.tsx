@@ -10,7 +10,7 @@ import { type Sequence } from "@prisma/client";
 import { type Slide } from "~/lib/types";
 
 export default function TagesschauPage() {
-  const tagesschauQuery = api.services.getTagesschau.useQuery();
+  const tagesschauQuery = api.services.getSequence.useQuery("tagesschau");
   const posts = tagesschauQuery.data;
   if (!posts) {
     return (
